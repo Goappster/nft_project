@@ -1,0 +1,2 @@
+/Users/inamullahashfaq/AndroidStudioProjects/nft_project/android/app/.cxx/Debug/4g4552f6/x86/CMakeFiles/edit_cache.dir
+/Users/inamullahashfaq/AndroidStudioProjects/nft_project/android/app/.cxx/Debug/4g4552f6/x86/CMakeFiles/rebuild_cache.dir

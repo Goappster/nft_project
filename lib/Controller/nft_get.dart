@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart';
 
@@ -26,11 +27,15 @@ class GridController extends GetxController {
               .map((e) => ItemModel.fromJson(e))
               .toList();
         } else {
-          print("Error: Expected a list in 'data' key, but got something else.");
+          if (kDebugMode) {
+            print("Error: Expected a list in 'data' key, but got something else.");
+          }
         }
       }
     } catch (e) {
-      print("Error fetching data: $e");
+      if (kDebugMode) {
+        print("Error fetching data: $e");
+      }
     } finally {
       isLoading(false);
     }

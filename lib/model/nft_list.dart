@@ -23,7 +23,7 @@ class ItemModel {
       ownerId: json["owner_id"] ?? "",
       name: json["name"] ?? "",
       description: json["description"] ?? "",
-      imageUrl: 'https://dev.appezio.com/${json["image_url"]}' ?? "",
+      imageUrl: 'https://dev.appezio.com/${json["image_url"]}',
       price: json["price"] ?? "0.00",
       createdAt: json["created_at"] ?? "",
     );

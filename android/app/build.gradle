@@ -20,7 +20,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace 'com.example.untitled'
 //    namespace = "com.holidays.car.parking.holidayscar"
-    compileSdk = 34
+    compileSdk = 35
     ndkVersion = "27.0.12077973"
 
     compileOptions {
@@ -34,9 +34,9 @@ android {
     defaultConfig {
         applicationId = "com.example.untitled"
         minSdk = 21  // Explicitly set to 21 or higher
-        targetSdk = 34
-        versionCode 6
-        versionName "1.6"
+        targetSdk = 35
+        versionCode 1
+        versionName "1.0.0"
     }
 
     signingConfigs {
