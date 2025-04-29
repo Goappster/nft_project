@@ -5,7 +5,7 @@ class CustomButton extends StatelessWidget {
   final String? text;
   final Widget? child;
   final VoidCallback onPressed;
-  final Color color;
+
   final double width;
   final double height;
 
@@ -14,7 +14,6 @@ class CustomButton extends StatelessWidget {
     this.text,
     this.child,
     required this.onPressed,
-    this.color = const Color(0xFFB6F09C),
     this.width = double.infinity,
     this.height = 50.0,
   })  : assert(text != null || child != null, "Either text or child must be provided"),
@@ -27,7 +26,7 @@ class CustomButton extends StatelessWidget {
       height: height,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: color,
+          backgroundColor: Colors.limeAccent.shade400,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -69,11 +68,11 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
             borderRadius: BorderRadius.circular(4),
           ),
           side: const BorderSide(color: Colors.grey, width: 2), // Border styling
-          activeColor: const Color(0xFFB6F09C),
+          activeColor: Colors.limeAccent.shade400,
           checkColor: const Color.fromARGB(255, 0, 0, 0), // Checkbox active color
         ),
         RichText(
-          text: const TextSpan(
+          text:  TextSpan(
             style: TextStyle(fontSize: 16, color: Colors.white),
             children: [
               TextSpan(text: "I agree with "),
@@ -81,7 +80,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
                 text: "Terms and conditions",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFFB6F09C), // Green color for emphasis
+                  color: Colors.limeAccent.shade400, // Green color for emphasis
                 ),
               ),
             ],

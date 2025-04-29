@@ -106,7 +106,9 @@ class LoginScreen extends StatelessWidget {
                     width: double.infinity,
                     height: 50,
                     child: ElevatedButton(
-
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.limeAccent.shade400
+                      ),
                       onPressed: controller.isLoading.value
                           ? null
                           : () => controller.validateAndLogin(

@@ -77,6 +77,17 @@ class _WalletScreenState extends State<WalletScreen> {
                       style: TextStyle(color: Colors.black, fontSize: 36, fontWeight: FontWeight.bold),
                     );
                   }),
+                  Obx(() {
+                    // Format the funds value as a string with commas and 2 decimal places
+                    String formattedBalance = NumberFormat("#,##0.00", "en_US").format(controller.estimatedPKR.value);
+
+                    return controller.estimatedPKR.value == 0.0
+                        ? CircularProgressIndicator()  // Loading state
+                        : Text(
+                      "Est. PKR ${formattedBalance}",  // Formatted balance with commas and 2 decimal places
+                      style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+                    );
+                  }),
                   const SizedBox(height: 10),
                   Row(
                     children: [
@@ -112,9 +123,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 ],
               ),
             ),
-
             const SizedBox(height: 20),
-
             // Cards
             Padding(
               padding: const EdgeInsets.all(8.0),

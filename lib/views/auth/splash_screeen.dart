@@ -54,7 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 style: TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF0B6F09C),
+                  color: Colors.limeAccent.shade400,
                   letterSpacing: 2,
                 ),
               ),
@@ -65,7 +65,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.w500,
-                  color: Color(0xFF0B6F09C),
+                  color: Colors.limeAccent.shade400,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -80,7 +80,7 @@ class _SplashScreenState extends State<SplashScreen> {
                        Navigator.pushNamed(context, AppRoutes.createAccountOptions);
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF0B6F09C),
+                        backgroundColor: Colors.limeAccent.shade400,
                         minimumSize: Size(double.infinity, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
@@ -101,7 +101,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       Navigator.pushNamed(context, AppRoutes.login);
                       },
                       style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: Color(0xFF0B6F09C)),
+                        side: BorderSide(color: Colors.limeAccent.shade400),
                         minimumSize: Size(double.infinity, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
@@ -110,7 +110,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       child: Text(
                         'Login',
                         style: TextStyle(
-                          color: Color(0xFF0B6F09C),
+                          color: Colors.limeAccent.shade400,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),

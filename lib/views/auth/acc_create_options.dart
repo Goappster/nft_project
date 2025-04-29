@@ -15,10 +15,10 @@ class CreateAccountScreen extends StatelessWidget {
           Column(
             children: [
               const SizedBox(height: 60),
-              const Text(
+              Text(
                 'ART.AI',
                 style: TextStyle(
-                  color: Colors.greenAccent,
+                  color: Colors.limeAccent.shade400,
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2,
@@ -80,7 +80,7 @@ class CreateAccountScreen extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: ()=> Navigator.pushNamed(context, AppRoutes.signUp),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFB6F09C), // Green Color
+                        backgroundColor:  Colors.limeAccent.shade400, // Green Color
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
