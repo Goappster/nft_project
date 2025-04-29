@@ -4,7 +4,7 @@ import 'dart:convert';
 
 class FundsController extends GetxController {
   var funds = 0.0.obs;
-  var invest = 0.0.obs; // Observable to store the response
+  var deposits = 0.0.obs; // Observable to store the response
 
   // Function to make the POST request with parameters directly
   Future<void> fetchFunds(String userId) async {
@@ -24,9 +24,9 @@ class FundsController extends GetxController {
 
         // Remove commas from balance and parse the value
         String balanceString = data['balance'].toString().replaceAll(',', '');
-        String investment_balance = data['investment_balance'].toString().replaceAll(',', '');
+        String total_deposits = data['total_deposits'].toString().replaceAll(',', '');
         funds.value = double.tryParse(balanceString) ?? 0.0;
-        invest.value = double.tryParse(investment_balance)?? 0.0;// Parse the cleaned balance
+        deposits.value = double.tryParse(total_deposits)?? 0.0;// Parse the cleaned balance
       } else {
         print('Failed to load funds. Status code: ${response.statusCode}');
         print('Response body: ${response.body}');

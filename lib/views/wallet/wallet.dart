@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
 import '../../Controller/balance.dart';
 
@@ -116,19 +117,19 @@ class _WalletScreenState extends State<WalletScreen> {
 
             // Cards
             Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.all(8.0),
               child: GridView.count(
                 crossAxisCount: 2,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 20,
-                childAspectRatio: 1.5,
+                childAspectRatio: 1.2,
                 children: [
-                  buildCard("Saving", "\$543.52", Icons.savings),
-                  buildCard("Investing", "\$${controller.invest.value}", Icons.show_chart),
-                  buildCard("Allowance", "\$465.50", Icons.attach_money),
-                  buildCard("Expense", "\$243.26", Icons.money_off),
+                  buildCard("Total Earning", "\$543.52", HugeIcons.strokeRoundedWallet02),
+                  buildCard("Total Deposit", "\$${controller.deposits.value}", HugeIcons.strokeRoundedCircleArrowDown02),
+                  buildCard("Total Withdraw", "\$465.50", Icons.attach_money),
+                  buildCard("Team Earning", "\$243.26", HugeIcons.strokeRoundedUserGroup03),
                 ],
               ),
             ),
@@ -167,11 +168,18 @@ class _WalletScreenState extends State<WalletScreen> {
         color: Colors.grey.shade900,
         borderRadius: BorderRadius.circular(20),
       ),
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.all(12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: Colors.white),
+          CircleAvatar(
+            backgroundColor: Colors.limeAccent.shade400.withOpacity(0.2), // Circle background color
+            child: Icon(
+              icon, // your icon here
+              color: Colors.limeAccent.shade400, // icon color
+            ),
+          ),
+
           const SizedBox(height: 10),
           Text(
             title,
@@ -179,16 +187,16 @@ class _WalletScreenState extends State<WalletScreen> {
           ),
           const SizedBox(height: 5),
           // For investment balance, use the reactive invest variable
-          title == "Investing"
+          title == "Total Deposit"
               ? Obx(() {
             return Text(
-              "\$${NumberFormat("#,##0.00", "en_US").format(controller.invest.value)}",
-              style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+              "\$${NumberFormat("#,##0.00", "en_US").format(controller.deposits.value)}",
+              style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
             );
           })
               : Text(
             amount,
-            style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+            style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ],
       ),
