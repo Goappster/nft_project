@@ -152,9 +152,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
   debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.splash,
+      initialRoute: AppRoutes.home,
       onGenerateRoute: AppRoutes.generateRoute,
       // home:  MainScreen(),
+      themeMode: ThemeMode.dark,
     );
   }
 }

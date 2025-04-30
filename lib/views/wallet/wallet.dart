@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
+import 'package:untitled/routes.dart';
 import '../../Controller/balance.dart';
+import 'deposit_methods.dart';
 
 class WalletScreen extends StatefulWidget {
   const WalletScreen({Key? key}) : super(key: key);
@@ -82,7 +85,15 @@ class _WalletScreenState extends State<WalletScreen> {
                     String formattedBalance = NumberFormat("#,##0.00", "en_US").format(controller.estimatedPKR.value);
 
                     return controller.estimatedPKR.value == 0.0
-                        ? CircularProgressIndicator()  // Loading state
+                        ? Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SpinKitWave(
+                              color: Colors.black,
+                              size: 16,
+                            ),
+                          ],
+                        )
                         : Text(
                       "Est. PKR ${formattedBalance}",  // Formatted balance with commas and 2 decimal places
                       style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
@@ -94,7 +105,13 @@ class _WalletScreenState extends State<WalletScreen> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: () {
-                            controller.fetchFunds('39');
+                            // Navigator.pushNamed(context, AppRoutes.DepositMethods);
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              builder: (context) => DepositMethodsDraggableSheet(),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,
