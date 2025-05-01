@@ -89,10 +89,7 @@ class DepositMethodsDraggableSheet extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => DepositMethodScreen(
-                                  walletAddress: "0x1234567890abcdef", // Example wallet address
-                                  qrData: "0x1234567890abcdef",       // Same address or other relevant data
-                                ),
+                                builder: (context) => DepositScreen(),
                               ),
                             );
 

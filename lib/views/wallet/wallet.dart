@@ -22,7 +22,7 @@ class _WalletScreenState extends State<WalletScreen> {
   void initState() {
     super.initState();
     // Fetch the funds automatically when the screen is loaded
-    controller.fetchFunds('39');
+    controller.fetchFunds('65');
   }
 
   @override
