@@ -65,7 +65,6 @@ class _WalletScreenState extends State<WalletScreen> {
                     style: TextStyle(color: Colors.black, fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 20),
-                  // Use Obx to make the balance reactive
                   Obx(() {
                     // Debug print to ensure funds.value is being updated
                     print("Current balance: \$${controller.funds.value}");
@@ -73,10 +72,8 @@ class _WalletScreenState extends State<WalletScreen> {
                     // Format the funds value as a string with commas and 2 decimal places
                     String formattedBalance = NumberFormat("#,##0.00", "en_US").format(controller.funds.value);
 
-                    return controller.funds.value == 0.0
-                        ? CircularProgressIndicator()  // Loading state
-                        : Text(
-                      "\$${formattedBalance}",  // Formatted balance with commas and 2 decimal places
+                    return Text(
+                      "\$${formattedBalance}",  // Show balance even if 0.00
                       style: TextStyle(color: Colors.black, fontSize: 36, fontWeight: FontWeight.bold),
                     );
                   }),
@@ -84,21 +81,12 @@ class _WalletScreenState extends State<WalletScreen> {
                     // Format the funds value as a string with commas and 2 decimal places
                     String formattedBalance = NumberFormat("#,##0.00", "en_US").format(controller.estimatedPKR.value);
 
-                    return controller.estimatedPKR.value == 0.0
-                        ? Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SpinKitWave(
-                              color: Colors.black,
-                              size: 16,
-                            ),
-                          ],
-                        )
-                        : Text(
-                      "Est. PKR ${formattedBalance}",  // Formatted balance with commas and 2 decimal places
+                    return Text(
+                      "Est. PKR ${formattedBalance}",
                       style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
                     );
                   }),
+
                   const SizedBox(height: 10),
                   Row(
                     children: [

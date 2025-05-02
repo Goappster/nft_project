@@ -31,8 +31,6 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const CreateAccountScreen());
         case DepositMethods:
         return MaterialPageRoute(builder: (_) =>  DepositMethodsDraggableSheet ());
-        case depositScreen:
-        return MaterialPageRoute(builder: (_) =>  DepositScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

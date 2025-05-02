@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -7,6 +8,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class DepositScreen extends StatefulWidget {
+final String name; final String network;
+
+  const DepositScreen({super.key, required this.name, required this.network});
   @override
   _DepositScreenState createState() => _DepositScreenState();
 }
@@ -47,8 +51,12 @@ class _DepositScreenState extends State<DepositScreen> {
         var res = await request.send();
 
         if (res.statusCode == 200) {
+          ;  // Add this line to print the response
+
           final body = await res.stream.bytesToString();
+
           final data = jsonDecode(body);
+          print(data);
           if (data['status'] == 'success') {
             images.add(data['url']);
           } else {
@@ -70,11 +78,28 @@ class _DepositScreenState extends State<DepositScreen> {
     });
   }
 
+  String getShortAddress(String address) {
+    if (address.length <= 10) return address;
+    return '${address.substring(0, 6)}...${address.substring(address.length - 4)}';
+  }
+
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(  backgroundColor: Colors.black, iconTheme: IconThemeData(color: Colors.white),),
+      appBar: AppBar(  backgroundColor: Colors.black, iconTheme: IconThemeData(color: Colors.white),
+      title:                                       Text(
+        "${widget.name} (${widget.network})",
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+          color: Colors.white
+        ),
+      ),
+
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -82,63 +107,129 @@ class _DepositScreenState extends State<DepositScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
-                child: QrImageView(
-                  data: qrData,
-                  size: 180,
-                  backgroundColor: Colors.limeAccent.shade400
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16), // Adjust the radius as needed
+                  child: QrImageView(
+                    data: qrData,
+                    size: 200,
+                    backgroundColor: Colors.white,
+                  ),
                 ),
               ),
+
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: SelectableText(
-                      walletAddress,
-                      style: TextStyle(fontSize: 16, color: Colors.blue),
-                    ),
+                  SelectableText(
+                    getShortAddress(walletAddress),
+                    style: TextStyle(fontSize: 16, color: Colors.limeAccent.shade400),
                   ),
                   IconButton(
-                    icon: Icon(Icons.copy),
+                    icon: Icon(Icons.copy, color: Colors.limeAccent.shade400, size: 20,),
                     onPressed: () {
                       Clipboard.setData(ClipboardData(text: walletAddress));
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Address copied")));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Address copied")),
+                      );
                     },
-                  )
+                  ),
                 ],
               ),
 
-              SizedBox(height: 30),
 
-              Text("Enter Deposit Amount", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.limeAccent.shade400)),
+              SizedBox(height: 16),
+
+              Text("Enter Amount", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
               SizedBox(height: 10),
               TextField(
                 controller: _amountController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   hintText: "Enter amount",
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                  prefixIcon: Icon(Icons.attach_money),
-                  filled: true,
-                  fillColor: Colors.grey[100],
+                  hintStyle: TextStyle(color: Colors.white54),
+                  filled: false,
+                  // Default border
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+
+                  // Border when enabled (not focused)
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(
+                      color: Colors.white38,
+                      width: 1,
+                    ),
+                  ),
+
+                  // Border when focused
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(
+                      color: Colors.limeAccent.shade400,
+                      width: 1,
+                    ),
+                  ),
+
+                  // Optional: prefix icon
+                  // prefixIcon: Icon(Icons.attach_money, color: Colors.limeAccent.shade400),
+                ),
+                style: TextStyle(color: Colors.white),
+              ),
+
+
+              SizedBox(height: 12),
+
+              RichText(
+                text: TextSpan(
+                  style: TextStyle(color: Colors.white70, fontSize: 12),
+                  children: [
+                    TextSpan(text: "• Avoid transactions with restricted or sanctioned entities. "),
+                    TextSpan(
+                      text: "More info\n",
+                      style: TextStyle(color: Colors.limeAccent.shade400, decoration: TextDecoration.underline),
+                    ),
+                    TextSpan(text: "• Please do not send NFTs to this wallet address.\n"),
+                    TextSpan(
+                      text: "• Smart contract deposits are generally unsupported — except for ETH (ERC20), BNB (BSC), Arbitrum, and Optimism.\n",
+                    ),
+                  ],
                 ),
               ),
 
-              SizedBox(height: 24),
 
-              Text("Upload Payment Proof (Optional)", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.grey)),
+              Text("Upload Payment Proof", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.limeAccent.shade400)),
               SizedBox(height: 10),
-              OutlinedButton.icon(
-                onPressed: uploadImage,
-                icon: Icon(Icons.upload_file, color: Colors.limeAccent.shade400,),
-                label: Text("Choose Image(s)", style: TextStyle(color: Colors.limeAccent.shade400,)),
-                style: OutlinedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                  side: BorderSide(color: Colors.white38, width: 1), // outline color and width
+              GestureDetector(
+                onTap: uploadImage, // Your image upload function
+                child: DottedBorder(
+                  borderType: BorderType.RRect,
+                  radius: Radius.circular(12),
+                  dashPattern: [6, 4],
+                  color: Colors.white38,
+                  strokeWidth: 1,
+                  child: Container(
+                    width: double.infinity,
+                    height: 80,
+                    alignment: Alignment.center,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.image, size: 25, color: Colors.grey),
+                        SizedBox(width: 8),
+                        Text(
+                          "Choose Image(s)",
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-
-
               SizedBox(height: 20),
-
               selectedImages.isNotEmpty
                   ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

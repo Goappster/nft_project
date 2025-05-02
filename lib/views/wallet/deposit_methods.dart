@@ -58,44 +58,77 @@ class DepositMethodsDraggableSheet extends StatelessWidget {
                     itemCount: controller.depositMethods.length,
                     itemBuilder: (context, index) {
                       final method = controller.depositMethods[index];
-                      return Card(
-                        color: Colors.limeAccent.shade400,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                      return InkWell(
 
-                        ),
-                        margin: EdgeInsets.symmetric(vertical: 6),
-                        elevation: 3,
-                        child: ListTile(
-                          contentPadding: EdgeInsets.all(12),
-                          leading: method.logoUrl != null
-                              ? Image.network(
-                            method.logoUrl!,
-                            width: 40,
-                            height: 40,
-                            errorBuilder: (context, error, stackTrace) => Icon(Icons.wallet),
-                          )
-                              : Icon(Icons.wallet),
-                          title: Text("${method.currency} (${method.network})"),
-                          subtitle: Text("Address: ${method.walletAddress}"),
-                          trailing: IconButton(
-                            icon: Icon(Icons.copy),
-                            onPressed: () {
-                              Clipboard.setData(ClipboardData(text: method.walletAddress));
-                              // Get.snackbar("Copied", "Wallet address copied");
-                            },
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DepositScreen(name: method.name, network: method.network,),
+                            ),
+                          );
+                        },
+                        child: Card(
+                          color: Color(0xFFCCFF00), // Matches neon yellow/green
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DepositScreen(),
-                              ),
-                            );
+                          // margin: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                          elevation: 4,
+                          child: Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                // Logo
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Image.network(
+                                    method.logoUrl ?? '',
+                                    width: 48,
+                                    height: 48,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) =>
+                                        Icon(Icons.wallet, size: 40),
+                                  ),
+                                ),
+                                SizedBox(width: 14),
 
-                          },
+                                // Details
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "${method.name} (${method.network})",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      SizedBox(height: 12),
+                                      Wrap(
+                                        spacing: 6,
+                                        runSpacing: 6,
+                                        children: [
+                                          InfoTag(label: "Fast: 0–30 min"),
+                                          InfoTag(label: "No Network Fee"),
+                                          InfoTag(label: "Start from 100 USDT"),
+
+
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       );
+
+
                     },
                   ),
                 ),
@@ -104,6 +137,27 @@ class DepositMethodsDraggableSheet extends StatelessWidget {
           }),
         );
       },
+    );
+  }
+}
+
+
+class InfoTag extends StatelessWidget {
+  final String label;
+  const InfoTag({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.08),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.black87),
+      ),
     );
   }
 }
