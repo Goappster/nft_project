@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -7,6 +9,7 @@ import 'package:untitled/views/Nft/home_screen.dart';
 import 'package:untitled/views/auth/signUp_screen.dart';
 import 'package:untitled/views/auth/splash_screeen.dart';
 import 'package:untitled/views/wallet/wallet.dart';
+import 'package:http/http.dart' as http;
 
 // Screens
 class HomeScreen extends StatelessWidget {
@@ -154,7 +157,7 @@ class MyApp extends StatelessWidget {
   debugShowCheckedModeBanner: false,
       initialRoute: AppRoutes.home,
       onGenerateRoute: AppRoutes.generateRoute,
-      // home:  MainScreen(),
+     // home:  DepositScreen(),
       themeMode: ThemeMode.dark,
     );
   }
@@ -242,3 +245,146 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
+
+
+
+
+
+
+class DepositScreen extends StatelessWidget {
+  // Function to make the API call
+
+  void makeApiCall(BuildContext context) async {
+    final url = 'https://dev.appezio.com/deposit.php';
+
+    final Map<String, dynamic> body = {
+      "user_id": "65",
+      "amount": "50",
+      "user_name": "ghani",
+      "user_email": "ghani@gmail.com",
+      "network": "bep20",
+      "name": "bnb",
+      "image_url": "http://dev.appezio.com/api/uploads/68153a76534dc_1000346221.jpg",
+      "image_id": "17"
+    };
+
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+      if (jsonResponse['status'] == 'success') {
+        // ✅ Show success dialog
+        showPaymentSuccessDialog(context);
+      } else {
+        // ❌ Show error if status is not success
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text(jsonResponse['message'] ?? 'Something went wrong.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } else {
+      // ❌ Network or server error
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Server Error'),
+            content: Text('Failed to connect. Please try again.'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Deposit API Call"),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            // makeApiCall(context);
+            showPaymentSuccessDialog(context);
+            // Trigger the API call when button is pressed
+          },
+          child: Text("Make Deposit"),
+        ),
+      ),
+    );
+  }
+  void showPaymentSuccessDialog(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(16),
+          child: Container(
+            width: double.infinity,
+            // margin: EdgeInsets.only(bottom: 20),
+            padding: EdgeInsets.symmetric(vertical: 24, ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(24),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 20,
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.check_circle, color: Colors.green, size: 48),
+                SizedBox(height: 12),
+                Text(
+                  'Payment successfully processed',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'The order has been sent to the restaurant.',
+                  style: TextStyle(color: Colors.grey[600]),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+}
+
