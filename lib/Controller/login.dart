@@ -1,7 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:provider/provider.dart';
 import 'package:untitled/service/dio_service.dart';
 import 'package:untitled/main.dart';
+
+import '../Provider /user_provider.dart';
 
 class LoginController extends GetxController {
   final box = GetStorage();
@@ -14,24 +18,24 @@ class LoginController extends GetxController {
     isPasswordHidden.value = !isPasswordHidden.value;
   }
 
-  void validateAndLogin(String email, String password) {
+  void validateAndLogin(BuildContext context, String email, String password) {
     emailError.value = email.isEmpty ? "Email cannot be empty" : '';
     passwordError.value = password.isEmpty ? "Password cannot be empty" : '';
 
     if (emailError.value.isEmpty && passwordError.value.isEmpty) {
-      login(email, password);
+      login(context, email, password);
     }
   }
 
-  Future<void> login(String email, String password) async {
+  Future<void> login(BuildContext context,String email, String password) async {
     isLoading.value = true;
     var response = await HttpService.login(email, password);
     isLoading.value = false;
 
     if (response != null && response["status"] == "success") {
 
-      box.write('isLoggedIn', true);
-      box.write('userEmail', email); // optional: save email or token
+      String userIdFromApi = response['id'].toString();
+      Provider.of<UserProvider>(context, listen: false).setUserId(userIdFromApi);
       print(response);
       Get.to(() => MainScreen());
     } else {

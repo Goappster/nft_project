@@ -444,15 +444,14 @@ class _DepositScreenState extends State<DepositScreen> {
               children: [
 
                 CircleAvatar(
-                  radius: 30, // You can adjust the size
+                  radius: 25, // You can adjust the size
                   backgroundColor: Colors.black, // optional background
                   child: Icon(
-                    Icons.check_circle,
+                    Icons.check_circle_rounded,
                     color: Colors.limeAccent.shade400,
-                    size: 38,
+                    size: 30,
                   ),
                 ),
-
                 const SizedBox(height: 12),
                 const Text(
                   'Payment successfully processed',

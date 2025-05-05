@@ -243,7 +243,7 @@ void _showBottomSheet(BuildContext context) {
                     onPressed: () {
                       Navigator.pop(context);
                       if (_formKey.currentState!.validate()) {
-                        controller.validateAndSignUp();
+                        controller.validateAndSignUp(context);
                       }
                     },
                     text: "Save and Sign Up",

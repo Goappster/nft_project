@@ -32,11 +32,7 @@ class AppRoutes {
         case DepositMethods:
         return MaterialPageRoute(builder: (_) =>  DepositMethodsDraggableSheet ());
       default:
-        return MaterialPageRoute(
-          builder: (_) => Scaffold(
-            body: Center(child: Text('No route defined for ${settings.name}')),
-          ),
-        );
+        return MaterialPageRoute(builder: (_) => SplashScreen());
     }
   }
 }

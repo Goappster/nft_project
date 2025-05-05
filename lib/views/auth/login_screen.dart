@@ -112,6 +112,7 @@ class LoginScreen extends StatelessWidget {
                       onPressed: controller.isLoading.value
                           ? null
                           : () => controller.validateAndLogin(
+                        context,
                                 emailController.text.trim(),
                                 passwordController.text.trim(),
                               ),

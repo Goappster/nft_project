@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:provider/provider.dart';
 import 'package:untitled/routes.dart';
+
+import '../../Provider /user_provider.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -11,25 +14,30 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  final box = GetStorage(); // ✅
 
   @override
   void initState() {
     super.initState();
-    _checkLogin();
+    _checkLoginStatus();
   }
 
-  void _checkLogin() async {
-    // await Future.delayed(Duration(seconds: 2)); // Optional: splash delay
+  // Check if user is logged in
+  Future<void> _checkLoginStatus() async {
+    await Provider.of<UserProvider>(context, listen: false).loadUserId();
 
-    bool isLoggedIn = box.read('isLoggedIn') ?? true;
+    String? userId = Provider.of<UserProvider>(context, listen: false).userId;
 
-    if (isLoggedIn) {
-      Get.offAll(() => AppRoutes.home);
+    if (userId != null) {
+      // If userId exists, navigate to the home screen
+      Navigator.pushReplacementNamed(context, AppRoutes.home);
     } else {
-      Get.offAll(() => AppRoutes.login);
+      // If no user ID, navigate to login screen after a short delay
+      Future.delayed(Duration(seconds: 3), () {
+        Navigator.pushReplacementNamed(context, AppRoutes.login);
+      });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

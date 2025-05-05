@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:provider/provider.dart';
 import 'package:untitled/routes.dart';
 import 'package:untitled/views/Nft/home_screen.dart';
 import 'package:untitled/views/auth/signUp_screen.dart';
 import 'package:untitled/views/auth/splash_screeen.dart';
 import 'package:untitled/views/wallet/wallet.dart';
 import 'package:http/http.dart' as http;
+
+import 'Provider /user_provider.dart';
 
 // Screens
 class HomeScreen extends StatelessWidget {
@@ -145,7 +148,15 @@ Future<void> main() async {
 
   // Initialize GetStorage
   await GetStorage.init(); // Must initialize GetStorage
-  runApp(const MyApp());
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -155,7 +166,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
   debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.home,
+      initialRoute: AppRoutes.splash,
       onGenerateRoute: AppRoutes.generateRoute,
      // home:  DepositScreen(),
       themeMode: ThemeMode.dark,

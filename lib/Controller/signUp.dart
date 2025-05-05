@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:untitled/main.dart';
 import 'package:untitled/service/dio_service.dart';
+
+import '../Provider /user_provider.dart';
 
 class SignUpController extends GetxController {
   var isLoading = false.obs;
@@ -19,7 +22,7 @@ class SignUpController extends GetxController {
     isPasswordHidden.value = !isPasswordHidden.value;
   }
 
-  Future<void> validateAndSignUp() async {
+  Future<void> validateAndSignUp(BuildContext context) async {
     if (nameController.text.isEmpty ||
         mobileController.text.isEmpty ||
         emailController.text.isEmpty ||
@@ -48,6 +51,8 @@ class SignUpController extends GetxController {
       Get.snackbar("Success", "Signup successful!",
           snackPosition: SnackPosition.BOTTOM);
                Get.to(() => MainScreen());
+      String userIdFromApi = response['id'].toString();
+      Provider.of<UserProvider>(context, listen: false).setUserId(userIdFromApi);
     } else {
       _showErrorDialog('$response');
     }
