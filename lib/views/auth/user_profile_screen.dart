@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import '../../Controller/user_controller.dart';
 
 
@@ -17,9 +16,9 @@ class UserProfileScreen extends StatelessWidget {
         if (userController.isLoading.value && user == null) {
           return Center(child: CircularProgressIndicator());
         }
-        // if (user == null) {
-        //   return Center(child: Text("No user data available.", style: TextStyle(fontSize: 12.sp)));
-        // }
+        if (user == null) {
+          return Center(child: Text("No user data available.", style: TextStyle(fontSize: 12.sp)));
+        }
 
         return Scaffold(
           backgroundColor: Colors.black,
@@ -47,7 +46,7 @@ class UserProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20.h),
+                  SizedBox(height: 12.h),
                   _buildSectionTitle("Privacy", "Customize your privacy to make experience better"),
                   SizedBox(height: 6.h),
                   Card(
