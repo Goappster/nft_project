@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -9,9 +10,11 @@ import 'package:untitled/routes.dart';
 import 'package:untitled/views/Nft/home_screen.dart';
 import 'package:untitled/views/auth/signUp_screen.dart';
 import 'package:untitled/views/auth/splash_screeen.dart';
+import 'package:untitled/views/auth/user_profile_screen.dart';
 import 'package:untitled/views/wallet/wallet.dart';
 import 'package:http/http.dart' as http;
 
+import 'Controller/user_controller.dart';
 import 'Provider /user_provider.dart';
 
 // Screens
@@ -70,7 +73,7 @@ class BottomNavController extends GetxController {
     const SearchScreen(),
     WalletScreen(),
     const NotificationScreen(),
-    const ProfileScreen(),
+    UserProfileScreen(),
   ];
 }
 
@@ -143,11 +146,8 @@ class CustomBottomNav extends StatelessWidget {
 
 // Main App
 Future<void> main() async {
-
+  Get.put(UserController());
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize GetStorage
-  await GetStorage.init(); // Must initialize GetStorage
 
   runApp(
     MultiProvider(
@@ -159,20 +159,27 @@ Future<void> main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
 
+class MyApp extends StatelessWidget {
+  final UserController userController = Get.find<UserController>();
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-  debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.splash,
-      onGenerateRoute: AppRoutes.generateRoute,
-     // home:  DepositScreen(),
-      themeMode: ThemeMode.dark,
+    userController.fetchUser(39);
+    return ScreenUtilInit(
+      designSize: Size(360, 690), // base design
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (_, __) => GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: AppRoutes.home,
+        onGenerateRoute: AppRoutes.generateRoute,
+       // home:  h(),
+        themeMode: ThemeMode.dark,
+      ),
     );
   }
 }
+
 
 // Main Screen with Bottom Navigation
 class MainScreen extends StatelessWidget {

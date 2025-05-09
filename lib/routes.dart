@@ -4,7 +4,7 @@ import 'package:untitled/views/auth/acc_create_options.dart';
 import 'package:untitled/views/auth/login_screen.dart';
 import 'package:untitled/views/auth/signUp_screen.dart';
 import 'package:untitled/views/auth/splash_screeen.dart';
-import 'package:untitled/views/wallet/DepositMethodScreen.dart';
+import 'package:untitled/views/auth/user_profile_screen.dart';
 import 'package:untitled/views/wallet/deposit_methods.dart';
 
 class AppRoutes {
@@ -15,6 +15,7 @@ class AppRoutes {
   static const String createAccountOptions = '/createAccountOptions';
   static const String DepositMethods = '/DepositMethods';
   static const String depositScreen = '/DepositScreen';
+  static const String settingScreen = '/UserProfileScreen';
 
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -31,6 +32,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const CreateAccountScreen());
         case DepositMethods:
         return MaterialPageRoute(builder: (_) =>  DepositMethodsDraggableSheet ());
+        case settingScreen:
+        return MaterialPageRoute(builder: (_) =>  UserProfileScreen());
       default:
         return MaterialPageRoute(builder: (_) => SplashScreen());
     }
