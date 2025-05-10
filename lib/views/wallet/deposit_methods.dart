@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -83,12 +84,12 @@ class DepositMethodsDraggableSheet extends StatelessWidget {
                                 // Logo
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(12),
-                                  child: Image.network(
-                                    method.logoUrl ?? '',
+                                  child: CachedNetworkImage(
+                                    imageUrl: method.logoUrl!,
                                     width: 48,
                                     height: 48,
                                     fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) =>
+                                    errorWidget: (context, error, stackTrace) =>
                                         Icon(Icons.wallet, size: 40),
                                   ),
                                 ),

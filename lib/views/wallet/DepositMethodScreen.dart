@@ -3,11 +3,15 @@ import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:untitled/routes.dart';
+
+import '../../tes.dart';
 
 class DepositScreen extends StatefulWidget {
 final String name; final String network;
@@ -154,7 +158,7 @@ class _DepositScreenState extends State<DepositScreen> {
     final url = 'https://dev.appezio.com/deposit.php';
 
     final Map<String, dynamic> body = {
-      "user_id": "65",
+      "user_id": "39",
       "amount": amount,
       "user_name": "ghani",
       "user_email": "ghani@gmail.com",
@@ -281,7 +285,17 @@ class _DepositScreenState extends State<DepositScreen> {
                   ),
 
                   // Optional: prefix icon
-                  // prefixIcon: Icon(Icons.attach_money, color: Colors.limeAccent.shade400),
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.all(10.0), // Optional: adjust padding as needed
+                    child: SizedBox(
+                      width: 24,  // or use 8.w if you are using flutter_screenutil
+                      height: 24, // or use 8.h
+                      child: SvgPicture.string(
+                        usdTSvg,
+                        fit: BoxFit.contain, // Better fit for icons
+                      ),
+                    ),
+                  ),
                 ),
                 style: const TextStyle(color: Colors.white),
               ),
@@ -405,7 +419,7 @@ class _DepositScreenState extends State<DepositScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    showPaymentSuccessDialog(context);
+                    submitDeposit();
                   },
                   child: const Text("Submit Deposit", style: TextStyle(color: Colors.black),),
                   style: ElevatedButton.styleFrom(

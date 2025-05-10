@@ -22,7 +22,7 @@ class _WalletScreenState extends State<WalletScreen> {
   void initState() {
     super.initState();
     // Fetch the funds automatically when the screen is loaded
-    controller.fetchFunds('65');
+    controller.fetchFunds('39');
   }
 
   @override
@@ -113,7 +113,10 @@ class _WalletScreenState extends State<WalletScreen> {
                       const SizedBox(width: 10),
                       Expanded(
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, AppRoutes.withdrawScreen);
+
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,
                             shape: RoundedRectangleBorder(

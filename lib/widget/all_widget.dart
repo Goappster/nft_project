@@ -90,3 +90,100 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
     );
   }
 }
+
+
+
+
+
+class UserCard extends StatelessWidget {
+  final String avatarUrl;
+  final String name;
+  final String email;
+  final int points;
+
+  const UserCard({
+    super.key,
+    required this.avatarUrl,
+    required this.name,
+    required this.email,
+    required this.points,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 6,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      // margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.limeAccent.shade700,
+          // gradient: LinearGradient(
+          //   colors: [Colors.indigo.shade300, Colors.blue.shade400],
+          //   begin: Alignment.topLeft,
+          //   end: Alignment.bottomRight,
+          // ),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          children: [
+            // Avatar
+            CircleAvatar(
+              radius: 32,
+              backgroundImage: NetworkImage(avatarUrl),
+            ),
+            const SizedBox(width: 16),
+            // User details
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    email,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black.withOpacity(0.8),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Points
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.star, color: Colors.amber, size: 20),
+                  const SizedBox(width: 4),
+                  Text(
+                    '$points',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
