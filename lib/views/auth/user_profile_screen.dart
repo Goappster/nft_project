@@ -53,15 +53,101 @@ class UserProfileScreen extends StatelessWidget {
                       padding:  EdgeInsets.all(8.w),
                       child: Column(
                         children: [
-                          _buildOptionTile(Icons.lock, "Security", () {}),
-                          _buildOptionTile(Icons.login, "Login details", () {}),
-                          _buildOptionTile(Icons.attach_money, "Billing", () {}),
-                          _buildOptionTile(Icons.privacy_tip, "Privacy", () {}),
-                          // Divider(),
-                          // _buildSectionTitle("Privacy", ""),
+                          // _buildOptionTile(Icons.lock, "Security", () {}),
+                          // _buildOptionTile(Icons.login, "Login details", () {}),
+                          // _buildOptionTile(Icons.attach_money, "Billing", () {}),
+                          // _buildOptionTile(Icons.privacy_tip, "Privacy", () {}),
+                          // // Divider(),
+                          // // _buildSectionTitle("Privacy", ""),
                           _buildOptionTile(Icons.person, "Account information", () {}),
                                   _buildOptionTile(Icons.people, "Friends", () {}),
                                   _buildOptionTile(Icons.notifications, "Notifications", () {}),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.purpleAccent.withOpacity(0.2),
+                          Colors.limeAccent.withOpacity(0.05),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: Colors.white10, width: 1),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Row(
+                        children: [
+                          // Icon with glow
+                          Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: RadialGradient(
+                                colors: [
+                                  Colors.limeAccent.shade400,
+                                  Colors.limeAccent.shade700,
+                                ],
+                              ),
+                            ),
+                            padding: const EdgeInsets.all(14),
+                            child: Icon(
+                              Icons.rocket_launch_rounded,
+                              size: 32,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+
+                          // Text & CTA
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Earn by Inviting!",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  "Share your referral link & earn rewards for every signup.",
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.white.withOpacity(0.75),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          const SizedBox(width: 12),
+
+                          // Invite Button
+                          ElevatedButton(
+                            onPressed: () {
+                              // TODO: Share functionality
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.limeAccent.shade400,
+                              foregroundColor: Colors.black,
+                              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                              elevation: 4,
+                              shadowColor: Colors.limeAccent,
+                            ),
+                            child: const Text("Invite"),
+                          ),
                         ],
                       ),
                     ),

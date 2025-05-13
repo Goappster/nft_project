@@ -4,8 +4,10 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:untitled/routes.dart';
 import '../../Controller/balance.dart';
+import '../../Provider /user_provider.dart';
 import 'deposit_methods.dart';
 
 class WalletScreen extends StatefulWidget {
@@ -16,21 +18,30 @@ class WalletScreen extends StatefulWidget {
 }
 
 class _WalletScreenState extends State<WalletScreen> {
+
   final FundsController controller = Get.put(FundsController());
+
 
   @override
   void initState() {
     super.initState();
-    // Fetch the funds automatically when the screen is loaded
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+
     controller.fetchFunds('39');
   }
 
   @override
   Widget build(BuildContext context) {
+    final userId = Provider.of<UserProvider>(context).userId;
+    print('UserId: $userId');
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.limeAccent.shade400,
         toolbarHeight: 0,
+
       ),
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
@@ -55,8 +66,9 @@ class _WalletScreenState extends State<WalletScreen> {
                     // backgroundImage: AssetImage('assets/avatar.png'),
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    "Welcome Back!",
+
+                  Text(
+                    "Welcome Back!$userId",
                     style: TextStyle(color: Colors.black87, fontSize: 16),
                   ),
                   const SizedBox(height: 4),

@@ -4,7 +4,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/service/dio_service.dart';
 import 'package:untitled/main.dart';
-
 import '../Provider /user_provider.dart';
 
 class LoginController extends GetxController {

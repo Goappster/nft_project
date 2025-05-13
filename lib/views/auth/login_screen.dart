@@ -118,7 +118,7 @@ class LoginScreen extends StatelessWidget {
                               ),
                       child: controller.isLoading.value
                           ? const CircularProgressIndicator(color: Colors.white)
-                          : const Text("Login"),
+                          : const Text("Login", style: TextStyle(color: Colors.black),),
                     ),
                   )),
             ],

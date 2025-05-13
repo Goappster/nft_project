@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/routes.dart';
 import 'package:untitled/views/Nft/home_screen.dart';
 import 'package:untitled/views/auth/signUp_screen.dart';
@@ -84,9 +85,9 @@ class CustomBottomNav extends StatelessWidget {
   final List<IconData> icons = [
    HugeIcons.strokeRoundedHome11,
     Icons.search,
-    Icons.wallet,
-    Icons.notifications_outlined,
-    Icons.person_outline,
+    HugeIcons.strokeRoundedWallet01,
+    HugeIcons.strokeRoundedCrown,
+    HugeIcons.strokeRoundedUserCircle
   ];
 
    CustomBottomNav({super.key});
@@ -99,7 +100,7 @@ class CustomBottomNav extends StatelessWidget {
     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
     margin: const EdgeInsets.all(10),
     decoration: BoxDecoration(
-      color: Colors.black,
+      color: Colors.limeAccent.shade400,
       borderRadius: BorderRadius.circular(50),
       boxShadow: [
         BoxShadow(
@@ -123,14 +124,14 @@ class CustomBottomNav extends StatelessWidget {
                   onPressed: () {
                     controller.selectedIndex.value = index;
                   },
-                  backgroundColor: Colors.limeAccent.shade400,
+                  backgroundColor: Colors.black,
                   shape: const CircleBorder(),
                   elevation: 10, // Adds elevation shadow to FAB
-                  child: Icon(icons[index], color: Colors.black, size: 28),
+                  child: Icon(icons[index], color: Colors.limeAccent.shade400, size: 28),
                 )
               : Icon(
                   icons[index],
-                  color: isSelected ? Colors.white : Colors.white54,
+                  color: isSelected ? Colors.black : Colors.lightGreen.shade900,
                   size: 26,
                 ),
         );
@@ -146,18 +147,20 @@ class CustomBottomNav extends StatelessWidget {
 
 // Main App
 Future<void> main() async {
-  Get.put(UserController());
   WidgetsFlutterBinding.ensureInitialized();
+  Get.put(UserController());
 
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()..loadUserId()),
+        // Add more providers here as needed
       ],
       child: MyApp(),
     ),
   );
 }
+
 
 
 class MyApp extends StatelessWidget {
@@ -171,7 +174,7 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (_, __) => GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: AppRoutes.home,
+        initialRoute: AppRoutes.splash,
         onGenerateRoute: AppRoutes.generateRoute,
        // home:  h(),
         themeMode: ThemeMode.dark,

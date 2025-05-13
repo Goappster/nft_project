@@ -14,7 +14,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -23,20 +22,19 @@ class _SplashScreenState extends State<SplashScreen> {
 
   // Check if user is logged in
   Future<void> _checkLoginStatus() async {
-    await Provider.of<UserProvider>(context, listen: false).loadUserId();
-
-    String? userId = Provider.of<UserProvider>(context, listen: false).userId;
+    final userId = Provider.of<UserProvider>(context, listen: false).userId;
 
     if (userId != null) {
       // If userId exists, navigate to the home screen
       Navigator.pushReplacementNamed(context, AppRoutes.home);
     } else {
       // If no user ID, navigate to login screen after a short delay
-      Future.delayed(Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 3), () {
         Navigator.pushReplacementNamed(context, AppRoutes.login);
       });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
         children: [
           // Background Image
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/background.png'), // Replace with your image path
                 fit: BoxFit.cover,
@@ -66,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   letterSpacing: 2,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               // Tagline
               Text(
                 'Create artwork with AI',
@@ -77,7 +75,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               // Buttons
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -89,12 +87,12 @@ class _SplashScreenState extends State<SplashScreen> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.limeAccent.shade400,
-                        minimumSize: Size(double.infinity, 50),
+                        minimumSize: const Size(double.infinity, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: Text(
+                      child: const Text(
                         'Create an Account',
                         style: TextStyle(
                           color: Colors.black,
@@ -103,14 +101,14 @@ class _SplashScreenState extends State<SplashScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     OutlinedButton(
                       onPressed: () {
                       Navigator.pushNamed(context, AppRoutes.login);
                       },
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(color: Colors.limeAccent.shade400),
-                        minimumSize: Size(double.infinity, 50),
+                        minimumSize: const Size(double.infinity, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -124,7 +122,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                   ],
                 ),
               ),
