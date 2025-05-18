@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/routes.dart';
 import 'package:untitled/views/Nft/home_screen.dart';
+import 'package:untitled/views/UserPortolio/user_portfollio.dart';
 import 'package:untitled/views/auth/signUp_screen.dart';
 import 'package:untitled/views/auth/splash_screeen.dart';
 import 'package:untitled/views/auth/user_profile_screen.dart';
@@ -73,7 +74,7 @@ class BottomNavController extends GetxController {
     GridScreen(),
     const SearchScreen(),
     WalletScreen(),
-    const NotificationScreen(),
+    NFTScreen(),
     UserProfileScreen(),
   ];
 }
@@ -174,9 +175,9 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (_, __) => GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: AppRoutes.splash,
+        // initialRoute: AppRoutes.home,
         onGenerateRoute: AppRoutes.generateRoute,
-       // home:  h(),
+        home:  MainScreen(),
         themeMode: ThemeMode.dark,
       ),
     );
