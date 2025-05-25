@@ -10,8 +10,11 @@ class NFTBloc extends Bloc<NFTEvent, NFTState> {
     on<LoadNFTs>((event, emit) async {
       emit(NFTLoading());
       try {
-        final nfts = await repository.fetchUserNFTs(event.userId);
-        emit(NFTLoaded(nfts));
+        // Get full response model
+        final response = await repository.fetchUserNFTs(event.userId);
+
+        // Emit loaded state with full model
+        emit(NFTLoaded(response));
       } catch (e) {
         print("❌ Error loading NFTs: $e");
         emit(NFTError("Failed to load NFTs"));

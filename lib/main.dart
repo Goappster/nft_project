@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -9,6 +11,9 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:untitled/routes.dart';
 import 'package:untitled/views/Nft/home_screen.dart';
+import 'package:untitled/views/UserPortolio/bloc/nft_bloc.dart';
+import 'package:untitled/views/UserPortolio/bloc/nft_event.dart';
+import 'package:untitled/views/UserPortolio/repository/nft_repository.dart';
 import 'package:untitled/views/UserPortolio/user_portfollio.dart';
 import 'package:untitled/views/auth/signUp_screen.dart';
 import 'package:untitled/views/auth/splash_screeen.dart';
@@ -150,14 +155,19 @@ class CustomBottomNav extends StatelessWidget {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Get.put(UserController());
-
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent, // transparent status bar
+    statusBarIconBrightness: Brightness.dark, // or Brightness.dark
+  ));
   runApp(
-    MultiProvider(
+    MultiBlocProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => UserProvider()..loadUserId()),
-        // Add more providers here as needed
+        BlocProvider<NFTBloc>(
+          create: (_) => NFTBloc(NFTRepository())..add(LoadNFTs(67)),
+        ),
+        // aur bhi bloc yahan add kar sakte ho
       ],
-      child: MyApp(),
+      child:  MyApp(),
     ),
   );
 }

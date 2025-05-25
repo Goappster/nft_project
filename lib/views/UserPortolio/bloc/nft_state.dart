@@ -1,29 +1,20 @@
 import 'package:equatable/equatable.dart';
 import '../model/nft_model.dart';
 
-abstract class NFTState extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
+abstract class NFTState {}
 
 class NFTInitial extends NFTState {}
 
 class NFTLoading extends NFTState {}
 
 class NFTLoaded extends NFTState {
-  final List<NFTModel> nfts;
+  final NFTModel nftResponse; // Now this is the full response
 
-  NFTLoaded(this.nfts);
-
-  @override
-  List<Object?> get props => [nfts];
+  NFTLoaded(this.nftResponse);
 }
 
 class NFTError extends NFTState {
   final String message;
 
   NFTError(this.message);
-
-  @override
-  List<Object?> get props => [message];
 }
