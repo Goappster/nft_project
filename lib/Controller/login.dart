@@ -5,6 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:untitled/service/dio_service.dart';
 import 'package:untitled/main.dart';
 import '../Provider /user_provider.dart';
+import '../SaveUser/cubit/user_cubit.dart';
+import '../SaveUser/models/user.dart';
+import '../SaveUser/services/user_storage.dart';
 
 class LoginController extends GetxController {
   final box = GetStorage();
@@ -32,10 +35,12 @@ class LoginController extends GetxController {
     isLoading.value = false;
 
     if (response != null && response["status"] == "success") {
+      final userMap = response['data'] as Map<String, dynamic>;
+      final user = User.fromMap(userMap);
 
-      String userIdFromApi = response['id'].toString();
-      Provider.of<UserProvider>(context, listen: false).setUserId(userIdFromApi);
-      print(response);
+      await UserStorage.saveUser(user);
+      context.read<UserCubit>().setUser(user);
+
       Get.to(() => MainScreen());
     } else {
       emailError.value = response?["message"] ?? "Login failed.";

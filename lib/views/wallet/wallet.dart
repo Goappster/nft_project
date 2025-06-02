@@ -35,8 +35,7 @@ class _WalletScreenState extends State<WalletScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final userId = Provider.of<UserProvider>(context).userId;
-    print('UserId: $userId');
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.limeAccent.shade400,
@@ -68,7 +67,7 @@ class _WalletScreenState extends State<WalletScreen> {
                   const SizedBox(height: 10),
 
                   Text(
-                    "Welcome Back!$userId",
+                    "Welcome Back!",
                     style: TextStyle(color: Colors.black87, fontSize: 16),
                   ),
                   const SizedBox(height: 4),

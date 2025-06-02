@@ -4,17 +4,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:marquee/marquee.dart';
 import 'package:untitled/views/UserPortolio/repository/nft_repository.dart';
 
+import '../../SaveUser/cubit/user_cubit.dart';
+import '../../SaveUser/services/user_storage.dart';
 import 'bloc/nft_bloc.dart';
 import 'bloc/nft_event.dart';
 import 'bloc/nft_state.dart';
 
 class NFTScreen extends StatelessWidget {
-  const NFTScreen({super.key});
-
-  Future<void> _onRefresh(BuildContext context) async {
-    context.read<NFTBloc>().add(LoadNFTs(67));
-  }
-
+   NFTScreen({super.key});
+   Future<void> _onRefresh(BuildContext context) async {
+     final user = context.read<UserCubit>().state;
+     if (user == null) return;
+     context.read<NFTBloc>().add(LoadNFTs(user.userId));
+   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,7 +87,7 @@ class NFTScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(height: 16.h),
+                        SizedBox(height: 8.h),
                         GridView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
@@ -95,8 +97,6 @@ class NFTScreen extends StatelessWidget {
                             childAspectRatio: (1.sw / 1.8) / (1.sh * 0.35),
 
 
-                            // mainAxisSpacing: 6.h,
-                            // crossAxisSpacing: 2.w,
                           ),
                           itemCount: nftResponse.data.length,
                           itemBuilder: (context, index) {

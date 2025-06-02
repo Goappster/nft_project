@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../Controller/user_controller.dart';
+import '../../SaveUser/cubit/user_cubit.dart';
 import '../../widget/all_widget.dart';
 
 
@@ -10,6 +12,7 @@ class UserProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<UserCubit>().state;
     return Scaffold(
       backgroundColor: Colors.grey[100],
       body: Obx(() {
@@ -36,8 +39,8 @@ class UserProfileScreen extends StatelessWidget {
                   SizedBox(height: 6.h),
                   UserCard(
                     avatarUrl: 'https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?t=st=1746817253~exp=1746820853~hmac=215124dd8b27ee76de94539e491f6b6fe196ce923cb5019f0e6a3c575ecf7e7c&w=1380',
-                    name: 'Hello App',
-                    email: 'Hello@example.com',
+                    name: user.name,
+                    email: user.email,
                     points: 120,
                   ),
 

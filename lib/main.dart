@@ -15,6 +15,7 @@ import 'package:untitled/views/UserPortolio/bloc/nft_bloc.dart';
 import 'package:untitled/views/UserPortolio/bloc/nft_event.dart';
 import 'package:untitled/views/UserPortolio/repository/nft_repository.dart';
 import 'package:untitled/views/UserPortolio/user_portfollio.dart';
+import 'package:untitled/views/auth/login_screen.dart';
 import 'package:untitled/views/auth/signUp_screen.dart';
 import 'package:untitled/views/auth/splash_screeen.dart';
 import 'package:untitled/views/auth/user_profile_screen.dart';
@@ -23,18 +24,12 @@ import 'package:http/http.dart' as http;
 
 import 'Controller/user_controller.dart';
 import 'Provider /user_provider.dart';
+import 'SaveUser/cubit/user_cubit.dart';
+import 'SaveUser/models/user.dart';
+import 'SaveUser/services/user_storage.dart';
+import 'hometest.dart';
 
 // Screens
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold
-  
-    (body: Center(child: Text("Home Screen", style: TextStyle(color: Colors.white, fontSize: 20))));
-  }
-}
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -155,17 +150,18 @@ class CustomBottomNav extends StatelessWidget {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Get.put(UserController());
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent, // transparent status bar
-    statusBarIconBrightness: Brightness.dark, // or Brightness.dark
-  ));
+
+  final user = await UserStorage.getUser();
+
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider<NFTBloc>(
-          create: (_) => NFTBloc(NFTRepository())..add(LoadNFTs(67)),
+          create: (_) => NFTBloc(NFTRepository())..add(LoadNFTs(user!.userId)),
         ),
-        // aur bhi bloc yahan add kar sakte ho
+        BlocProvider(
+          create: (_) => UserCubit(user),  // pass nullable user safely
+        ),
       ],
       child:  MyApp(),
     ),
@@ -187,7 +183,11 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         // initialRoute: AppRoutes.home,
         onGenerateRoute: AppRoutes.generateRoute,
-        home:  MainScreen(),
+        home: BlocBuilder<UserCubit, User?>(
+          builder: (context, user) {
+            return user == null ? LoginScreen() : HomePage();
+          },
+        ),
         themeMode: ThemeMode.dark,
       ),
     );
