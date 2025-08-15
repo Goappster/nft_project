@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:untitled/Controller/login.dart';
+import 'package:untitled/app_theme.dart';
 
 class LoginScreen extends StatelessWidget {
   final LoginController controller = Get.put(LoginController());
@@ -12,8 +13,8 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(backgroundColor: Colors.black, elevation: 0),
+      // backgroundColor: Colors.black,
+      appBar: AppBar(backgroundColor: Colors.white, elevation: 0),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -23,7 +24,7 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 20),
               const Text(
                 "Login",
-                style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold),
+                style: TextStyle(color: Colors.black, fontSize: 28, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               const Text(
@@ -33,13 +34,13 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 30),
         
               // Email Field
-              const Text("Email", style: TextStyle(color: Colors.white, fontSize: 16)),
+              const Text("Email", style: TextStyle(color: Colors.black, fontSize: 16)),
               const SizedBox(height: 6),
               TextField(
                 controller: emailController,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: Colors.grey[900],
+                  fillColor: Colors.black12,
                   hintText: "Email",
                   hintStyle: const TextStyle(color: Colors.grey),
                   border: OutlineInputBorder(
@@ -47,7 +48,7 @@ class LoginScreen extends StatelessWidget {
                     borderSide: BorderSide.none,
                   ),
                 ),
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.black),
               ),
         
               // Email Validation Message
@@ -62,14 +63,14 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 12),
         
               // Password Field with Toggle
-              const Text("Password", style: TextStyle(color: Colors.white, fontSize: 16)),
+              const Text("Password", style: TextStyle(color: Colors.black, fontSize: 16)),
               const SizedBox(height: 6),
               Obx(() => TextField(
                     controller: passwordController,
                     obscureText: controller.isPasswordHidden.value, // Toggle password visibility
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.grey[900],
+                      fillColor: Colors.black12,
                       hintText: "Password",
                       hintStyle: const TextStyle(color: Colors.grey),
                       border: OutlineInputBorder(
@@ -107,7 +108,8 @@ class LoginScreen extends StatelessWidget {
                     height: 50,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.limeAccent.shade400
+                        elevation: 0,
+                        backgroundColor: AppColors.primaryLight,
                       ),
                       onPressed: controller.isLoading.value
                           ? null

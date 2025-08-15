@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:untitled/app_theme.dart';
 import 'package:untitled/routes.dart';
 
 import '../../tes.dart';
@@ -22,16 +23,16 @@ final String name; final String network;
 }
 bool isLoading = false;
 
-final String walletAddress = '0x55d398326f99059ff775485246999027b3197955';
-final String qrData = 'fafafa';
-final String userId = '39'; // Replace with actual user ID
+const String walletAddress = '0x55d398326f99059ff775485246999027b3197955';
+const String qrData = '0x55d398326f99059ff775485246999027b3197955';
+const String userId = '39'; // Replace with actual user ID
 
 void showLoadingDialog(BuildContext context) {
   showDialog(
     barrierDismissible: false,
     context: context,
     builder: (_) => Dialog(
-      backgroundColor: Colors.transparent,
+      // backgroundColor: Colors.transparent,
       child: Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
@@ -201,14 +202,14 @@ class _DepositScreenState extends State<DepositScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(  backgroundColor: Colors.black, iconTheme: const IconThemeData(color: Colors.white),
+      // backgroundColor: Colors.black,
+      appBar: AppBar( backgroundColor: Colors.white, iconTheme: const IconThemeData(color: Colors.black),
       title:                                       Text(
         "${widget.name} (${widget.network})",
         style: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 16,
-          color: Colors.white
+          color: Colors.black
         ),
       ),
 
@@ -219,26 +220,38 @@ class _DepositScreenState extends State<DepositScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16), // Adjust the radius as needed
-                  child: QrImageView(
-                    data: qrData,
-                    size: 200,
-                    backgroundColor: Colors.white,
-                  ),
-                ),
-              ),
+            Center(
+  child: Container(
+    padding: EdgeInsets.all(8), // optional spacing around QR
+    decoration: BoxDecoration(
+      color: Colors.white24,
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(
+        color: AppColors.primaryLight, // Set your desired border color
+        width: 2,           // Border width
+      ),
+    ),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: QrImageView(
+        data: qrData,
+        size: 200,
+        backgroundColor: Colors.white,
+      ),
+    ),
+  ),
+),
+
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SelectableText(
                     getShortAddress(walletAddress),
-                    style: TextStyle(fontSize: 16, color: Colors.limeAccent.shade400),
+                    style: TextStyle(fontSize: 16, color: Colors.black),
                   ),
                   IconButton(
-                    icon: Icon(Icons.copy, color: Colors.limeAccent.shade400, size: 20,),
+                    icon: Icon(Icons.copy, color: Colors.black, size: 20,),
                     onPressed: () {
                       Clipboard.setData(ClipboardData(text: walletAddress));
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -252,14 +265,14 @@ class _DepositScreenState extends State<DepositScreen> {
 
               const SizedBox(height: 16),
 
-              const Text("Enter Amount", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+              const Text("Enter Amount", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black)),
               const SizedBox(height: 10),
               TextField(
                 controller: _amountController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   hintText: "Enter amount",
-                  hintStyle: const TextStyle(color: Colors.white54),
+                  hintStyle: const TextStyle(color: Colors.black45),
                   filled: false,
                   // Default border
                   border: OutlineInputBorder(
@@ -270,7 +283,7 @@ class _DepositScreenState extends State<DepositScreen> {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: const BorderSide(
-                      color: Colors.white38,
+                      color: Colors.black,
                       width: 1,
                     ),
                   ),
@@ -279,7 +292,7 @@ class _DepositScreenState extends State<DepositScreen> {
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(
-                      color: Colors.limeAccent.shade400,
+                      color: AppColors.primaryLight,
                       width: 1,
                     ),
                   ),
@@ -297,7 +310,7 @@ class _DepositScreenState extends State<DepositScreen> {
                     ),
                   ),
                 ),
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.black),
               ),
 
 
@@ -305,12 +318,12 @@ class _DepositScreenState extends State<DepositScreen> {
 
               RichText(
                 text: TextSpan(
-                  style: const TextStyle(color: Colors.white70, fontSize: 12),
+                  style: const TextStyle(color: Colors.black, fontSize: 12),
                   children: [
                     const TextSpan(text: "• Avoid transactions with restricted or sanctioned entities. "),
                     TextSpan(
                       text: "More info\n",
-                      style: TextStyle(color: Colors.limeAccent.shade400, decoration: TextDecoration.underline),
+                      style: TextStyle(color: AppColors.scaffoldDark, decoration: TextDecoration.underline, fontWeight: FontWeight.bold),
                     ),
                     const TextSpan(text: "• Please do not send NFTs to this wallet address.\n"),
                     const TextSpan(
@@ -319,7 +332,7 @@ class _DepositScreenState extends State<DepositScreen> {
                   ],
                 ),
               ),
-              Text("Payment Screenshots", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.limeAccent.shade400)),
+              Text("Payment Screenshots", style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.scaffoldDark)),
               const SizedBox(height: 10),
               GestureDetector(
                 onTap: uploadImage, // Your image upload function
@@ -327,7 +340,7 @@ class _DepositScreenState extends State<DepositScreen> {
                   borderType: BorderType.RRect,
                   radius: const Radius.circular(12),
                   dashPattern: [6, 4],
-                  color: Colors.white38,
+                  color: Colors.black,
                   strokeWidth: 1,
                   child: Container(
                     width: double.infinity,
@@ -399,7 +412,7 @@ class _DepositScreenState extends State<DepositScreen> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: CircleAvatar(
                                   radius: 14,
-                                  backgroundColor: Colors.limeAccent.shade400,
+                                  backgroundColor: AppColors.primaryLight,
                                   child: const Icon(Icons.close, size: 16, color: Colors.black),
                                 ),
                               ),
@@ -424,8 +437,9 @@ class _DepositScreenState extends State<DepositScreen> {
                   child: const Text("Submit Deposit", style: TextStyle(color: Colors.black),),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 14),
-                    backgroundColor: Colors.limeAccent.shade400,
+                    backgroundColor: AppColors.primaryLight,
                     textStyle: const TextStyle(fontSize: 16),
+                    elevation: 0,
                   ),
                 ),
               ),

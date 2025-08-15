@@ -29,7 +29,7 @@ class AppRoutes {
       case signUp:
         return MaterialPageRoute(builder: (_) => SignUpScreen());
       case home:
-        return MaterialPageRoute(builder: (_) => MainScreen());
+        return MaterialPageRoute(builder: (_) => CustomBottomNavScreen());
         case createAccountOptions:
         return MaterialPageRoute(builder: (_) => const CreateAccountScreen());
         case DepositMethods:

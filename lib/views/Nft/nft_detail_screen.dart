@@ -1,5 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:untitled/app_theme.dart';
 
 class NFTDetailController extends GetxController {
   RxInt favorites = 0.obs;
@@ -26,7 +29,7 @@ class NFTDetailScreen extends StatelessWidget {
               _buildNFTImage(),
               _buildNFTInfo(),
             const SizedBox(height: 60,),
-              _buildSellButton()
+              _buildSellButton(context)
               // _buildStats(),
               // _buildTabs(),
               // _buildSection("About Collection", Icons.info, [_buildCollectionInfo()]),
@@ -56,15 +59,36 @@ class NFTDetailScreen extends StatelessWidget {
       ],
     );
   }
-
-  Widget _buildNFTImage() {
-    return Center(
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Image.network(item.imageUrl ,width: double.infinity,  fit: BoxFit.cover),
+Widget _buildNFTImage() {
+  return Center(
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: CachedNetworkImage(
+        imageUrl: item.imageUrl,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        placeholder: (context, url) => Shimmer.fromColors(
+          baseColor: Colors.grey.shade300,
+          highlightColor: Colors.grey.shade100,
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: Colors.grey.shade300,
+          ),
+        ),
+        errorWidget: (context, url, error) => const Icon(Icons.broken_image),
       ),
-    );
-  }
+    ),
+  );
+}
+  // Widget _buildNFTImage() {
+  //   return Center(
+  //     child: ClipRRect(
+  //       borderRadius: BorderRadius.circular(20),
+  //       child: Image.network(item.imageUrl ,width: double.infinity,  fit: BoxFit.cover),
+  //     ),
+  //   );
+  // }
 
   Widget _buildNFTInfo() {
     return Column(
@@ -177,14 +201,63 @@ class NFTDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSellButton() {
+  Widget _buildSellButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(backgroundColor: Colors.blue, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), minimumSize: const Size(double.infinity, 50)),
-        onPressed: () {},
-        child: const Text("Sell", style: TextStyle(fontSize: 18)),
+
+        style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryLight, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), minimumSize: const Size(double.infinity, 50),      elevation: 0,),
+        onPressed: () {showBuyNFTDialog(context);},
+        child: const Text("Buy Now", style: TextStyle(fontSize: 18, color: Colors.black), ),
       ),
     );
+
+    
   }
+void showBuyNFTDialog(BuildContext context) {
+  Get.defaultDialog(
+    title: '',
+    content: Column(
+      // mainAxisSize: MainAxisSize.min,
+      children: [
+        Image.asset(
+          'assets/images/buyNFT.png', // Your illustration asset
+          height: 150,
+          width: 250,
+        ),
+        const SizedBox(height: 20),
+        const Text(
+         "Do you want to buy?\nIt will be added to your collection.",
+          style: TextStyle(
+            fontSize: 14,
+            // fontWeight: FontWeight.bold,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 30),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            OutlinedButton(
+              onPressed: () {
+                Get.back();
+              },
+              child: const Text("Cancel", style: TextStyle(color: Colors.black),),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(elevation: 0,),
+              onPressed: () {
+                // TODO: Call your buy NFT API here
+                Get.back();
+              },
+              child: Text("Buy Now", style: TextStyle(color: Colors.black),),
+            ),
+          ],
+        ),
+      ],
+    ),
+    radius: 20,
+  );
+}
+
 }

@@ -41,7 +41,7 @@ class LoginController extends GetxController {
       await UserStorage.saveUser(user);
       context.read<UserCubit>().setUser(user);
 
-      Get.to(() => MainScreen());
+      Get.to(() => CustomBottomNavScreen());
     } else {
       emailError.value = response?["message"] ?? "Login failed.";
     }

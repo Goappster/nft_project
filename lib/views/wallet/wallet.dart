@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:untitled/routes.dart';
+import 'package:untitled/app_theme.dart';
 import '../../Controller/balance.dart';
-import '../../Provider /user_provider.dart';
+import '../../SaveUser/services/user_storage.dart';
 import 'deposit_methods.dart';
+import '../../routes.dart';
 
 class WalletScreen extends StatefulWidget {
   const WalletScreen({Key? key}) : super(key: key);
@@ -18,9 +18,9 @@ class WalletScreen extends StatefulWidget {
 }
 
 class _WalletScreenState extends State<WalletScreen> {
-
   final FundsController controller = Get.put(FundsController());
 
+  String userName = '';
 
   @override
   void initState() {
@@ -29,216 +29,194 @@ class _WalletScreenState extends State<WalletScreen> {
   }
 
   Future<void> _initialize() async {
-
-    controller.fetchFunds('39');
+    final user = await UserStorage.getUser();
+    if (user != null) {
+      setState(() => userName = user.name);
+      controller.fetchFunds(user.userId.toString());
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.limeAccent.shade400,
-        toolbarHeight: 0,
-
+        backgroundColor: AppColors.secondaryLight,
+        toolbarHeight: 0.h,
       ),
-      backgroundColor: Colors.black,
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.limeAccent.shade400,
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(30),
-                  bottomRight: Radius.circular(30),
-                ),
-              ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CircleAvatar(
-                    radius: 24,
-                    // backgroundImage: AssetImage('assets/avatar.png'),
+                  _buildHeader(),
+                  SizedBox(height: 20.h),
+                  _buildStatCards(),
+                SizedBox(height: 10.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    child: Text(
+                      "Recent Transactions",
+                      style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                    ),
                   ),
-                  const SizedBox(height: 10),
-
-                  Text(
-                    "Welcome Back!",
-                    style: TextStyle(color: Colors.black87, fontSize: 16),
-                  ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    "Evan Cameron",
-                    style: TextStyle(color: Colors.black, fontSize: 22, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 20),
-                  Obx(() {
-                    // Debug print to ensure funds.value is being updated
-                    print("Current balance: \$${controller.funds.value}");
-
-                    // Format the funds value as a string with commas and 2 decimal places
-                    String formattedBalance = NumberFormat("#,##0.00", "en_US").format(controller.funds.value);
-
-                    return Text(
-                      "\$${formattedBalance}",  // Show balance even if 0.00
-                      style: TextStyle(color: Colors.black, fontSize: 36, fontWeight: FontWeight.bold),
-                    );
-                  }),
-                  Obx(() {
-                    // Format the funds value as a string with commas and 2 decimal places
-                    String formattedBalance = NumberFormat("#,##0.00", "en_US").format(controller.estimatedPKR.value);
-
-                    return Text(
-                      "Est. PKR ${formattedBalance}",
-                      style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
-                    );
-                  }),
-
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // Navigator.pushNamed(context, AppRoutes.DepositMethods);
-                            showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              builder: (context) => DepositMethodsDraggableSheet(),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                          ),
-                          child: Text("Deposit", style: TextStyle(color: Colors.limeAccent.shade400)),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, AppRoutes.withdrawScreen);
-
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                          ),
-                          child: Text("Withdraw", style: TextStyle(color: Colors.limeAccent.shade400)),
-                        ),
-                      ),
-                    ],
-                  ),
+                  SizedBox(height: 2.h),
+                  _buildTransactions(),
                 ],
               ),
             ),
-            const SizedBox(height: 20),
-            // Cards
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GridView.count(
-                crossAxisCount: 2,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 20,
-                childAspectRatio: 1.2,
-                children: [
-                  buildCard("Total Earning", "\$543.52", HugeIcons.strokeRoundedWallet02),
-                  buildCard("Total Deposit", "\$${controller.deposits.value}", HugeIcons.strokeRoundedCircleArrowDown02),
-                  buildCard("Total Withdraw", "\$465.50", Icons.attach_money),
-                  buildCard("Team Earning", "\$243.26", HugeIcons.strokeRoundedUserGroup03),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // Recent Transactions
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                "Recent Transactions",
-                style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(height: 10),
-            ListView(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              children: [
-                buildTransactionTile("Food", "-\$4.02", "Today, 12:04PM"),
-                buildTransactionTile("Shopping", "-\$50.30", "Yesterday, 5:00PM"),
-                buildTransactionTile("Transport", "-\$10.50", "2 Days ago"),
-                buildTransactionTile("Transport", "-\$10.50", "2 Days ago"),
-              ],
-            ),
-          ],
-        ),
-      ),
     );
   }
 
-  Widget buildCard(String title, String amount, IconData icon) {
+  Widget _buildHeader() {
     return Container(
+      padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.grey.shade900,
-        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(30.r),
+          bottomRight: Radius.circular(30.r),
+        ),
+                border: Border.all(
+      color: Colors.grey, // Border color
+      width: .2,           // Border width
+    ),
       ),
-      padding: const EdgeInsets.all(12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleAvatar(
-            backgroundColor: Colors.limeAccent.shade400.withOpacity(0.2), // Circle background color
-            child: Icon(
-              icon, // your icon here
-              color: Colors.limeAccent.shade400, // icon color
-            ),
-          ),
-
-          const SizedBox(height: 10),
-          Text(
-            title,
-            style: const TextStyle(color: Colors.white70, fontSize: 14),
-          ),
-          const SizedBox(height: 5),
-          // For investment balance, use the reactive invest variable
-          title == "Total Deposit"
-              ? Obx(() {
-            return Text(
-              "\$${NumberFormat("#,##0.00", "en_US").format(controller.deposits.value)}",
-              style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-            );
-          })
-              : Text(
-            amount,
-            style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+          // CircleAvatar(radius: 24.r),
+          SizedBox(height: 10.h),
+          Text("Welcome Back!", style: TextStyle(color: Colors.black87, fontSize: 16.sp)),
+          SizedBox(height: 4.h),
+          Text(userName, style: TextStyle(color: Colors.black, fontSize: 22.sp, fontWeight: FontWeight.bold)),
+          SizedBox(height: 20.h),
+          Obx(() {
+            String balance = NumberFormat("#,##0.00", "en_US").format(controller.funds.value);
+            return Text("\$$balance", style: TextStyle(color: Colors.black, fontSize: 36.sp, fontWeight: FontWeight.bold));
+          }),
+          Obx(() {
+            String balancePKR = NumberFormat("#,##0.00", "en_US").format(controller.estimatedPKR.value);
+            return Text("Est. PKR $balancePKR", style: TextStyle(color: Colors.black, fontSize: 16.sp));
+          }),
+          SizedBox(height: 10.h),
+          Row(
+            children: [
+              _buildActionButton("Deposit", () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.green,
+                  builder: (context) => DepositMethodsDraggableSheet(),
+                );
+              }),
+              SizedBox(width: 10.w),
+              _buildActionButton("Withdraw", () {
+                Navigator.pushNamed(context, AppRoutes.withdrawScreen);
+              }),
+            ],
           ),
         ],
       ),
     );
   }
 
+  Widget _buildActionButton(String text, VoidCallback onPressed) {
+    return Expanded(
+      child: ElevatedButton(
+      
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          backgroundColor: Color(0xFfBFFB4F),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50.r)),
+        ),
+        child: Text(text, style: TextStyle(color: Colors.black, fontSize: 14.sp)),
+      ),
+    );
+  }
 
-  Widget buildTransactionTile(String title, String amount, String time) {
-    return ListTile(
-      contentPadding: EdgeInsets.zero,
-      leading: Icon(Icons.fastfood, color: Colors.white),
-      title: Text(title, style: TextStyle(color: Colors.white)),
-      subtitle: Text(time, style: TextStyle(color: Colors.white54)),
-      trailing: Text(amount, style: TextStyle(color: Colors.redAccent)),
+Widget _buildStatCards() {
+  return Padding(
+    padding: EdgeInsets.symmetric(horizontal: 10.w).copyWith(bottom: 0), // 👈 no bottom padding
+    child: GridView(
+      padding: EdgeInsets.zero, // 👈 Ensure grid has no internal padding
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisSpacing: 10.h, // 👈 Add some space between rows if needed
+        crossAxisSpacing: 10.w,
+        childAspectRatio: 1.2,
+      ),
+      children: [
+        _buildCard("Total Earning", "\$543.52", HugeIcons.strokeRoundedWallet02),
+        Obx(() => _buildCard("Total Deposit", "\$${controller.deposits.value.toStringAsFixed(2)}", HugeIcons.strokeRoundedCircleArrowDown02)),
+        Obx(() => _buildCard("Total Withdraw", "\$${controller.totalWithdrawals.value.toStringAsFixed(2)}", Icons.attach_money)),
+        Obx(() => _buildCard("Team Earning", "\$${controller.referralBalance.value.toStringAsFixed(2)}", HugeIcons.strokeRoundedUserGroup03)),
+        // _buildCard("Total Withdraw", "\$465.50", Icons.attach_money),
+        // _buildCard("Team Earning", "\$243.26", HugeIcons.strokeRoundedUserGroup03),
+      ],
+    ),
+  );
+}
+
+
+  Widget _buildCard(String title, String amount, IconData icon) {
+    return Container(
+      decoration: BoxDecoration(
+        //  color: Colors.red.withOpacity(0.1), // debugging
+         color: Colors.white70,
+        borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(
+      color: Colors.grey, // Border color
+      width: .2,           // Border width
+    ),
+      ),
+      padding: EdgeInsets.all(12.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CircleAvatar(
+            backgroundColor: const Color(0xFFE6FFB8),
+            child: Icon(icon, color: Colors.black),
+          ),
+          SizedBox(height: 10.h),
+          Text(title, style: TextStyle( fontSize: 14.sp)),
+          SizedBox(height: 5.h),
+          Text(amount, style: TextStyle( fontSize: 20.sp, fontWeight: FontWeight.bold)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTransactions() {
+    final dummyTransactions = [
+      {"title": "Food", "amount": "-\$4.02", "time": "Today, 12:04PM"},
+      {"title": "Shopping", "amount": "-\$50.30", "time": "Yesterday, 5:00PM"},
+      {"title": "Transport", "amount": "-\$10.50", "time": "2 Days ago"},
+       {"title": "Transport", "amount": "-\$10.50", "time": "2 Days ago"},
+    ];
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        child: ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: dummyTransactions.length,
+          // padding: EdgeInsets.symmetric(horizontal: 20.w),
+          // padding: const EdgeInsets.all(8.0),
+          itemBuilder: (_, i) {
+            final item = dummyTransactions[i];
+            return ListTile(
+              // contentPadding: EdgeInsets.zero,
+              leading: Icon(Icons.fastfood, size: 24.sp),
+              title: Text(item["title"]!, style: TextStyle(fontSize: 14.sp)),
+              subtitle: Text(item["time"]!, style: TextStyle(color: Colors.white54, fontSize: 12.sp)),
+              trailing: Text(item["amount"]!, style: TextStyle(color: Colors.redAccent, fontSize: 14.sp)),
+            );
+          },
+        ),
+      ),
     );
   }
 }

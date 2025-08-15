@@ -22,7 +22,7 @@ class DepositMethodsDraggableSheet extends StatelessWidget {
       builder: (context, scrollController) {
         return Container(
           decoration: BoxDecoration(
-            color: Colors.grey.shade900,
+            color: Colors.white,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           padding: EdgeInsets.all(15),
@@ -49,7 +49,7 @@ class DepositMethodsDraggableSheet extends StatelessWidget {
                 ),
                 Text(
                   "Select Deposit Method",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
                 ),
                 // Divider(),
                 SizedBox(height: 12,),
@@ -70,12 +70,12 @@ class DepositMethodsDraggableSheet extends StatelessWidget {
                           );
                         },
                         child: Card(
-                          color: Color(0xFFCCFF00), // Matches neon yellow/green
+                          // color: Color(0xFFCCFF00), // Matches neon yellow/green
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
                           // margin: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                          elevation: 4,
+                          elevation: 0,
                           child: Padding(
                             padding: EdgeInsets.all(16),
                             child: Row(

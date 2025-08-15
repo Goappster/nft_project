@@ -46,6 +46,8 @@ class FundsController extends GetxController {
   var funds = 0.0.obs;         // USD balance
   var deposits = 0.0.obs;      // Total deposits
   var estimatedPKR = 0.0.obs;  // Converted balance in PKR
+  var totalWithdrawals = 0.0.obs; 
+  var referralBalance = 0.0.obs; 
 
   Future<void> fetchFunds(String userId) async {
     try {
@@ -63,9 +65,13 @@ class FundsController extends GetxController {
 
         String balanceString = data['balance'].toString().replaceAll(',', '');
         String total_deposits = data['total_deposits'].toString().replaceAll(',', '');
+        String Withdrawals = data['total_withdrawals'].toString().replaceAll(',', '');
+        String Referral = data['referral_balance'].toString().replaceAll(',', '');
 
         funds.value = double.tryParse(balanceString) ?? 0.0;
         deposits.value = double.tryParse(total_deposits) ?? 0.0;
+        totalWithdrawals.value = double.tryParse(Withdrawals) ?? 0.0;
+        referralBalance.value = double.tryParse(Referral) ?? 0.0;
 
         // Call conversion after getting balance
         convertUSDtoPKR(funds.value);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:untitled/app_theme.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -42,7 +43,7 @@ class HomePage extends StatelessWidget {
             Container(
               padding: EdgeInsets.all(16.w),
               decoration: BoxDecoration(
-                color: const Color(0xFF65D693),
+                color:  AppColors.primaryLight,
                 borderRadius: BorderRadius.circular(20.r),
               ),
               child: Row(
@@ -51,10 +52,21 @@ class HomePage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Refer and Earn", style: TextStyle(color: Colors.white70, fontSize: 12.sp)),
+                        Text("Refer and Earn", style: TextStyle(color: Colors.black, fontSize: 12.sp)),
                         SizedBox(height: 4.h),
                         Text("Refer your Friend\nand Win Cryptocoins",
-                            style: TextStyle(fontSize: 16.sp, color: Colors.white, fontWeight: FontWeight.bold))
+                            style: TextStyle(fontSize: 16.sp, color: Colors.black, fontWeight: FontWeight.bold)),
+    SizedBox(height: 4.h),
+             ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      backgroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
+                    ),
+                    child: Text("Invite Now", style: TextStyle(fontSize: 14.sp, color: Colors.white)),
+                  )
+
                       ],
                     ),
                   ),
@@ -84,10 +96,11 @@ class HomePage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
+                      elevation: 0,
+                      backgroundColor: AppColors.primaryLight,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
                     ),
-                    child: Text("Redeem Now", style: TextStyle(fontSize: 14.sp)),
+                    child: Text("Redeem Now", style: TextStyle(fontSize: 14.sp, color: Colors.black)),
                   )
                 ],
               ),
@@ -109,19 +122,6 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.green,
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
-        currentIndex: 1,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.explore), label: 'Explore'),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.pie_chart), label: 'Portfolio'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
-      ),
     );
   }
 
@@ -133,7 +133,7 @@ class HomePage extends StatelessWidget {
       borderRadius: BorderRadius.circular(20.r),
     ),
     child: Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.all(8.0.w),
       child: Column(
         // crossAxisAlignment: CrossAxisAlignment.center,
         // mainAxisAlignment: MainAxisAlignment.center,

@@ -50,7 +50,7 @@ class SignUpController extends GetxController {
     if (response != null && response["status"] == "success") {
       Get.snackbar("Success", "Signup successful!",
           snackPosition: SnackPosition.BOTTOM);
-               Get.to(() => MainScreen());
+               Get.to(() => CustomBottomNavScreen());
       String userIdFromApi = response['id'].toString();
       Provider.of<UserProvider>(context, listen: false).setUserId(userIdFromApi);
     } else {

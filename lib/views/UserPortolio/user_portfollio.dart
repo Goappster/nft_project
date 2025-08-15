@@ -20,16 +20,8 @@ class NFTScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(toolbarHeight: 0, backgroundColor: Color(0xFFF4F6FA)),
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: Image.asset(
-              'assets/background.png',
-              fit: BoxFit.cover,
-            ),
-          ),
-          BlocBuilder<NFTBloc, NFTState>(
+      appBar: AppBar(toolbarHeight: 0, backgroundColor: Colors.white10),
+      body:  BlocBuilder<NFTBloc, NFTState>(
             builder: (context, state) {
               if (state is NFTLoading) {
                 return const Center(child: CircularProgressIndicator());
@@ -49,73 +41,77 @@ class NFTScreen extends StatelessWidget {
                   );
                 }
 
-                return RefreshIndicator(
-                  onRefresh: () => _onRefresh(context),
-                  child: SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    padding: EdgeInsets.all(12.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Your NFT portfolio",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        SizedBox(height: 8.h),
-                        Row(
-                          children: [
-                            Text(
-                              "\$${nftResponse.totalValue.toStringAsFixed(2)}",
-                              style: TextStyle(
-                                fontSize: 36.sp,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                            SizedBox(width: 8.w),
-                            Text(
-                              "${nftResponse.growthRate >= 0 ? '+' : ''}${nftResponse.growthRate.toStringAsFixed(2)}%",
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.bold,
-                                color: nftResponse.growthRate >= 0 ? Colors.green : Colors.red,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8.h),
-                        GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-
-                            childAspectRatio: (1.sw / 1.8) / (1.sh * 0.35),
-
-
-                          ),
-                          itemCount: nftResponse.data.length,
-                          itemBuilder: (context, index) {
-                            final nft = nftResponse.data[index];
-                            return NFTCard(nft: nft);
-                          },
-                        ),
-                      ],
-                    ),
+return RefreshIndicator(
+  onRefresh: () => _onRefresh(context),
+  child: SingleChildScrollView(
+    physics: const AlwaysScrollableScrollPhysics(),
+    padding: EdgeInsets.all(12.w),
+    child: ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: MediaQuery.of(context).size.height, // 🔑 This ensures full height
+      ),
+      child: Align( // 🔑 Important: replaces IntrinsicHeight
+        alignment: Alignment.topCenter,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Your NFT portfolio",
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            SizedBox(height: 8.h),
+            Row(
+              children: [
+                Text(
+                  "\$${nftResponse.totalValue.toStringAsFixed(2)}",
+                  style: TextStyle(
+                    fontSize: 36.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
-                );
+                ),
+                SizedBox(width: 8.w),
+                Text(
+                  "${nftResponse.growthRate >= 0 ? '+' : ''}${nftResponse.growthRate.toStringAsFixed(2)}%",
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                    color: nftResponse.growthRate >= 0 ? Colors.green : Colors.red,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 8.h),
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(), // keep this for inside scroll
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: (1.sw / 1.8) / (1.sh * 0.35),
+              ),
+              itemCount: nftResponse.data.length,
+              itemBuilder: (context, index) {
+                final nft = nftResponse.data[index];
+                return NFTCard(nft: nft);
+              },
+            ),
+          ],
+        ),
+      ),
+    ),
+  ),
+);
+
               } else if (state is NFTError) {
                 return Center(child: Text(state.message, style: TextStyle(fontSize: 16.sp)));
               }
               return const SizedBox();
             },
           ),
-        ],
-      ),
     );
   }
 }
