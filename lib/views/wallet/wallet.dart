@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
@@ -40,8 +41,9 @@ class _WalletScreenState extends State<WalletScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.secondaryLight,
+        backgroundColor: AppColors.scaffoldLight,
         toolbarHeight: 0.h,
+        surfaceTintColor: Colors.white,
       ),
       body: SingleChildScrollView(
               child: Column(
@@ -50,15 +52,24 @@ class _WalletScreenState extends State<WalletScreen> {
                   _buildHeader(),
                   SizedBox(height: 20.h),
                   _buildStatCards(),
-                SizedBox(height: 10.h),
+                SizedBox(height: 16.h),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
-                    child: Text(
-                      "Recent Transactions",
-                      style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Recent Transactions",
+                          style: TextStyle(fontSize: 16.sp, ),
+                        ),
+                        Text(
+                          "View All",
+                          style: TextStyle(fontSize: 12.sp, ),
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 2.h),
+                  SizedBox(height: 6.h),
                   _buildTransactions(),
                 ],
               ),
@@ -69,17 +80,20 @@ class _WalletScreenState extends State<WalletScreen> {
   Widget _buildHeader() {
     return Container(
       padding: EdgeInsets.all(20.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(30.r),
-          bottomRight: Radius.circular(30.r),
-        ),
-                border: Border.all(
-      color: Colors.grey, // Border color
-      width: .2,           // Border width
+decoration: BoxDecoration(
+  color: Colors.white,
+  borderRadius: BorderRadius.only(
+    bottomLeft: Radius.circular(30.r),
+    bottomRight: Radius.circular(30.r),
+  ),
+  boxShadow: [
+    BoxShadow(
+      color: Colors.black12.withOpacity(.1),  // Light shadow color
+      blurRadius: 5,         // How soft the shadow is
+      offset: Offset(0, 2),   // Position of the shadow (x, y)
     ),
-      ),
+  ],
+),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -188,35 +202,112 @@ Widget _buildStatCards() {
     );
   }
 
-  Widget _buildTransactions() {
-    final dummyTransactions = [
-      {"title": "Food", "amount": "-\$4.02", "time": "Today, 12:04PM"},
-      {"title": "Shopping", "amount": "-\$50.30", "time": "Yesterday, 5:00PM"},
-      {"title": "Transport", "amount": "-\$10.50", "time": "2 Days ago"},
-       {"title": "Transport", "amount": "-\$10.50", "time": "2 Days ago"},
-    ];
+Widget _buildTransactions() {
+  final List<TransactionItem> transactions = [
+    TransactionItem(
+      icon: FontAwesomeIcons.arrowDown,
+      title: 'Online Shopping',
+      time: '1 Sep 9:29',
+      amount: 120.00,
+      status: 'Success',
+    ),
+    TransactionItem(
+      icon: FontAwesomeIcons.arrowDown,
+      title: 'To: Ailsa Salsa',
+      time: '1 Sep 9:29',
+      amount: 2000.00,
+      status: 'Failed',
+    ),
+    TransactionItem(
+      icon: FontAwesomeIcons.arrowDown,
+      title: 'Buy Food',
+      time: '1 Sep 9:29',
+      amount: 80.00,
+      status: 'Success',
+    ),
+  ];
 
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Card(
-        child: ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: dummyTransactions.length,
-          // padding: EdgeInsets.symmetric(horizontal: 20.w),
-          // padding: const EdgeInsets.all(8.0),
-          itemBuilder: (_, i) {
-            final item = dummyTransactions[i];
-            return ListTile(
-              // contentPadding: EdgeInsets.zero,
-              leading: Icon(Icons.fastfood, size: 24.sp),
-              title: Text(item["title"]!, style: TextStyle(fontSize: 14.sp)),
-              subtitle: Text(item["time"]!, style: TextStyle(color: Colors.white54, fontSize: 12.sp)),
-              trailing: Text(item["amount"]!, style: TextStyle(color: Colors.redAccent, fontSize: 14.sp)),
-            );
-          },
-        ),
-      ),
-    );
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case 'Success':
+        return Colors.green[100]!;
+      case 'Failed':
+        return Colors.red[100]!;
+      default:
+        return Colors.grey[200]!;
+    }
   }
+
+  Color _getTextColor(String status) {
+    switch (status) {
+      case 'Success':
+        return Colors.green[800]!;
+      case 'Failed':
+        return Colors.red[800]!;
+      default:
+        return Colors.black;
+    }
+  }
+
+  return ListView.separated(
+    shrinkWrap: true,
+    physics: const NeverScrollableScrollPhysics(),
+    itemCount: transactions.length,
+   separatorBuilder: (_, __) => SizedBox.shrink(),
+    itemBuilder: (context, index) {
+      final item = transactions[index];
+      return ListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
+        leading: CircleAvatar(
+          backgroundColor: AppColors.secondaryLight,
+          radius: 24.r,
+          child: Icon(item.icon, color: Colors.black),
+        ),
+        title: Text(item.title, style: TextStyle(fontSize: 16.sp)),
+        subtitle: Text(item.time, style: TextStyle(fontSize: 12.sp, color: Colors.grey)),
+        trailing: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              '+\$${item.amount.toStringAsFixed(2)}',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp),
+            ),
+            SizedBox(height: 4.h),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+              decoration: BoxDecoration(
+                color: _getStatusColor(item.status),
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Text(
+                item.status,
+                style: TextStyle(
+                  color: _getTextColor(item.status),
+                  fontSize: 12.sp,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+}
+
+class TransactionItem {
+  final IconData icon;
+  final String title;
+  final String time;
+  final double amount;
+  final String status;
+
+  TransactionItem({
+    required this.icon,
+    required this.title,
+    required this.time,
+    required this.amount,
+    required this.status,
+  });
 }

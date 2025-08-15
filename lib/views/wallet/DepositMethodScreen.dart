@@ -271,8 +271,8 @@ class _DepositScreenState extends State<DepositScreen> {
                 controller: _amountController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  hintText: "Enter amount",
-                  hintStyle: const TextStyle(color: Colors.black45),
+                  hintText: "Type the amount (in USDT)",
+                  hintStyle:  TextStyle(color: Colors.black45, fontSize: 12.sp),
                   filled: false,
                   // Default border
                   border: OutlineInputBorder(
@@ -384,7 +384,7 @@ class _DepositScreenState extends State<DepositScreen> {
                       return Stack(
                         children: [
                           SizedBox(
-                      height: 150,
+                      // height: 150,
                             child: Card(
                               elevation: 3,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -408,12 +408,12 @@ class _DepositScreenState extends State<DepositScreen> {
                                   selectedImages.removeAt(index);
                                 });
                               },
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
                                 child: CircleAvatar(
                                   radius: 14,
                                   backgroundColor: AppColors.primaryLight,
-                                  child: const Icon(Icons.close, size: 16, color: Colors.black),
+                                  child: Icon(Icons.close, size: 16, color: Colors.black),
                                 ),
                               ),
                             ),
@@ -424,9 +424,9 @@ class _DepositScreenState extends State<DepositScreen> {
                   ),
                 ],
               )
-                  : const SizedBox(),
+                  : const SizedBox(height: 30,),
 
-              const SizedBox(height: 30),
+              // const SizedBox(height: 30),
 
               SizedBox(
                 width: double.infinity,

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:untitled/app_theme.dart';
 
 import '../../../Controller/balance.dart';
 import '../../../tes.dart';
@@ -60,11 +61,11 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      // backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text("Withdraw", style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.black,
-        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text("Withdraw", ),
+        backgroundColor: Colors.white,
+        // iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -72,13 +73,13 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Wallet Address", style: TextStyle(color: Colors.white70)),
+              const Text("Wallet Address", ),
               TextField(
                 controller: _addressController,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   hintText: "Enter Wallet Address",
-                  hintStyle: const TextStyle(color: Colors.white54),
+                  hintStyle: const TextStyle(color: Colors.black12),
                   filled: false,
                   contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
                   // Default border
@@ -105,7 +106,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                   ),
                   suffixIcon: IconButton(
                     onPressed: pasteAddress,
-                    icon: Icon(Icons.paste, color: Colors.grey),
+                    icon: Icon(Icons.paste, ),
                     tooltip: "Paste Address",
                   ),
                 ),
@@ -113,14 +114,14 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
               ),
 
               const SizedBox(height: 16),
-              const Text("Select Network", style: TextStyle(color: Colors.white70)),
+              const Text("Select Network", ),
               DropdownButton<String>(
                 dropdownColor: Colors.black87,
                 value: selectedNetwork,
                 items: networks.map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
-                    child: Text(value, style: const TextStyle(color: Colors.white)),
+                    child: Text(value, ),
                   );
                 }).toList(),
                 onChanged: (value) {
@@ -132,13 +133,13 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                 },
               ),
               const SizedBox(height: 16),
-              const Text("Withdrawal Amount", style: TextStyle(color: Colors.white70)),
+              const Text("Withdrawal Amount", ),
               TextField(
                 controller: _amountController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   hintText: "Enter amount",
-                  hintStyle: const TextStyle(color: Colors.white54),
+                  // hintStyle: const TextStyle(color: Colors.white54),
                   filled: false,
                   // Default border
                   border: OutlineInputBorder(
@@ -158,7 +159,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(
-                      color: Colors.limeAccent.shade400,
+                      color: AppColors.borderDark,
                       width: 1,
                     ),
                   ),

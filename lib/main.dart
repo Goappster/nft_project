@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:untitled/app_theme.dart';
@@ -75,7 +76,7 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: AppRoutes.generateRoute,
         home: BlocBuilder<UserCubit, User?>(
           builder: (context, user) {
-            return user == null ? LoginScreen() :  LoginScreen();
+            return user == null ? LoginScreen() :  CustomBottomNavScreen();
           },
         ),
          theme: AppTheme.light,
@@ -94,10 +95,10 @@ class CustomBottomNavScreen extends StatefulWidget {
 class _CustomBottomNavScreenState extends State<CustomBottomNavScreen> {
   int _selectedIndex = 0;
 
+  // Your screen widgets (replace with actual implementations)
   final List<Widget> _screens = [
      GridScreen(),
-    const SearchScreen(),
-    const WalletScreen(),
+    WalletScreen(),
     NFTScreen(),
     const HomePage(),
   ];
@@ -108,87 +109,106 @@ class _CustomBottomNavScreenState extends State<CustomBottomNavScreen> {
     });
   }
 
-  Widget _buildNavItem({required IconData icon, required String label, required int index}) {
-    final bool isSelected = _selectedIndex == index;
-    final Color color = isSelected ? Color(0xffdcf6ac) : Color(0xff76a221);
-
-    return GestureDetector(
-      onTap: () => _onItemTapped(index),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, color: color),
-          Text(label, style: TextStyle(color: color, fontSize: 12)),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-  
-       extendBody: true,
-      body: _screens[_selectedIndex],
-      bottomNavigationBar: BottomAppBar(
-        elevation: 6,
-        shape: const CircularNotchedRectangle(),
-        color: Color(0xff32460e),
-        notchMargin: 12,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Left side icons
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _buildNavItem(icon: HugeIcons.strokeRoundedHome01, label: "Home", index: 0),
-                ],
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _buildNavItem(icon: HugeIcons.strokeRoundedNews, label: "News", index: 1),
-                ],
-              ),
-              SizedBox(width: 50), // Space for FAB
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _buildNavItem(icon: HugeIcons.strokeRoundedChartRose, label: "Portfolio", index: 3),
-                ],
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _buildNavItem(icon: HugeIcons.strokeRoundedAccountSetting03, label: "Setting", index: 4),
-                ],
-              ),
-            ],
-          ),
-        ),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _screens,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        elevation: 3,
-      
-        tooltip: 'wallet',
-        backgroundColor: AppColors.primaryLight,
-        shape: CircleBorder(
-   
-  ),
-        onPressed: () => _onItemTapped(2),
-        child: SvgPicture.asset(SvgIcons.Wallet, width: 24, height: 24, color: Colors.black,),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _selectedIndex,
+        onDestinationSelected: _onItemTapped,
+
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home, color: Colors.black,),
+            label: 'Home',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.account_balance_wallet_outlined),
+            selectedIcon: Icon(Icons.account_balance_wallet, color: Colors.black,),
+            label: 'Wallet',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.pie_chart_outline),
+            selectedIcon: Icon(Icons.pie_chart, color: Colors.black,),
+            label: 'Portfolio',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.settings_outlined),
+            selectedIcon: Icon(Icons.settings, color: Colors.black,),
+            label: 'Settings',
+          ),
+        ],
+        elevation: 10,
+        shadowColor: Colors.black,
+        backgroundColor:  Colors.white,
+        indicatorColor: Theme.of(context).colorScheme.primary,
+        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       ),
     );
   }
 }
 
+// class CustomBottomNavScreen extends StatefulWidget {
+//   @override
+//   State<CustomBottomNavScreen> createState() => _CustomBottomNavScreenState();
+// }
 
+// class _CustomBottomNavScreenState extends State<CustomBottomNavScreen> {
+//   int _selectedIndex = 0;
 
+//   final List<Widget> _screens = [
+//     GridScreen(),
+//     // const SearchScreen(),
+//     const WalletScreen(),
 
+//   ];
+
+//   void _onItemTapped(int index) {
+//     setState(() {
+//       _selectedIndex = index;
+//     });
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: _screens[_selectedIndex],
+//       bottomNavigationBar: NavigationBar(
+//         selectedIndex: _selectedIndex,
+//         onDestinationSelected: _onItemTapped,
+//         backgroundColor: Colors.white,
+//         indicatorColor: Colors.green,
+//         labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+//         destinations: const [
+//           NavigationDestination(
+//             icon: FaIcon(FontAwesomeIcons.house),
+//             selectedIcon: FaIcon(FontAwesomeIcons.houseChimney),
+//             label: 'Home',
+//           ),
+//           NavigationDestination(
+//             icon: FaIcon(FontAwesomeIcons.wallet),
+//             selectedIcon: FaIcon(FontAwesomeIcons.wallet),
+//             label: 'Wallet',
+//           ),
+//           NavigationDestination(
+//             icon: FaIcon(FontAwesomeIcons.chartPie),
+//             selectedIcon: FaIcon(FontAwesomeIcons.chartSimple),
+//             label: 'Portfolio',
+//           ),
+//           NavigationDestination(
+//             icon: FaIcon(FontAwesomeIcons.gear),
+//             selectedIcon: FaIcon(FontAwesomeIcons.solidCircleUser),
+//             label: 'Settings',
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 
 

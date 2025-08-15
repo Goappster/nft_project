@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:untitled/app_theme.dart';
@@ -207,57 +208,107 @@ Widget _buildNFTImage() {
       child: ElevatedButton(
 
         style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryLight, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)), minimumSize: const Size(double.infinity, 50),      elevation: 0,),
-        onPressed: () {showBuyNFTDialog(context);},
+        onPressed: () {showBuyNFTBottomSheet(context);},
         child: const Text("Buy Now", style: TextStyle(fontSize: 18, color: Colors.black), ),
       ),
     );
 
     
   }
-void showBuyNFTDialog(BuildContext context) {
-  Get.defaultDialog(
-    title: '',
-    content: Column(
-      // mainAxisSize: MainAxisSize.min,
-      children: [
-        Image.asset(
-          'assets/images/buyNFT.png', // Your illustration asset
-          height: 150,
-          width: 250,
-        ),
-        const SizedBox(height: 20),
-        const Text(
-         "Do you want to buy?\nIt will be added to your collection.",
-          style: TextStyle(
-            fontSize: 14,
-            // fontWeight: FontWeight.bold,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 30),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+void showBuyNFTBottomSheet(BuildContext context) {
+  Get.bottomSheet(
+    Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+      ),
+      padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 20.h, bottom: 20.h),
+      child: SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            OutlinedButton(
-              onPressed: () {
-                Get.back();
-              },
-              child: const Text("Cancel", style: TextStyle(color: Colors.black),),
+            // Close button aligned top right
+            Align(
+              alignment: Alignment.topRight,
+              child: GestureDetector(
+                onTap: () => Get.back(),
+                child: Icon(
+                  Icons.close,
+                  size: 28.sp,
+                  color: Colors.black54,
+                ),
+              ),
             ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(elevation: 0,),
-              onPressed: () {
-                // TODO: Call your buy NFT API here
-                Get.back();
-              },
-              child: Text("Buy Now", style: TextStyle(color: Colors.black),),
+
+            SizedBox(height: 10.h),
+
+            Image.asset(
+              'assets/images/buyNFT.png',
+              height: 150.h,
+              width: 220.w,
+              fit: BoxFit.contain,
+            ),
+            SizedBox(height: 16.h),
+
+            Column(
+  children: [
+    Text(
+      "Don’t miss your chance!",
+      style: TextStyle(
+        fontSize: 18.sp,
+        fontWeight: FontWeight.bold,
+        color: Colors.black87,
+      ),
+      textAlign: TextAlign.center,
+    ),
+    SizedBox(height: 4.h), // spacing between title and description
+    Text(
+      "Grab this now and complete your collection with something special.",
+      style: TextStyle(
+        fontSize: 14.sp,
+        fontWeight: FontWeight.w500,
+        color: Colors.black54,
+        height: 1.4,
+      ),
+      textAlign: TextAlign.center,
+    ),
+  ],
+),
+            SizedBox(height: 35.h),
+
+            SizedBox(
+              height: 49.h,
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  backgroundColor: AppColors.primaryLight,
+                  padding: EdgeInsets.symmetric(vertical: 16.h),
+                ),
+                onPressed: () {
+                  // TODO: Call your buy NFT API here
+                  Get.back();
+                },
+                child: Text(
+                  "Buy Now",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
-      ],
+      ),
     ),
-    radius: 20,
+    isScrollControlled: true,
   );
 }
+
+
 
 }
